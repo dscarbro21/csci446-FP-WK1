@@ -1,0 +1,44 @@
+#title, #instructionTitle, #instructions, footer, aside {
+    text-align: center;
+    background-color: purple;
+    color: #ff0a4b;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 50px;
+}
+
+#gamespace {
+	margin: auto;
+	clear: both;
+	display: block;
+	border: 2px solid black;
+}
+
+#instructionTitle {
+	font-size: 1em;
+}
+
+#instructions {
+	border-top: 1px solid black;
+	font-size: 0.75em;
+	display: none;
+}
+
+body {
+    background-color: #11ff8c;
+}
+
+footer {
+	clear: both;
+	font-size: 2em;
+	font-weight: normal;
+	color: #ff0a4b;
+}
+
+aside {
+	border: 1px solid black;
+	margin: auto;
+	clear: both;
+	display: block;
+	padding: 2px;
+}
