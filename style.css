@@ -7,6 +7,10 @@
     padding: 50px;
 }
 
+#title {
+    padding:20px;
+}
+
 #gamespace {
 	margin: auto;
 	clear: both;
