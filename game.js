@@ -1,77 +1,22 @@
 var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
-var upMenuHeight = 80;
-var upMenuBorder = 3;
-var upButtonBorder = 1;
-var upButtonWidth = 150;
-var upButtonHeight = 60;
-var upButtonYPos = 10;
-
-var HUDwidth = 200;
-var HUDheight = 75;
-
-var healthUpX = 20;
-var damageUpX = 190;
-var shotSpeedUpX = 360;
-var medPackX = 530;
-
 var tomX = 780;
 var tomY = canv.height / 2;
 
 var baseX = canv.width - 150;
 
-var healthUpCost = 10;
-var damageUpCost = 10;
-var speedUpCost = 10;
-var medPackCost = 50;
-
-var coins = 100;
-
-var health = 100;
-var maxHealth = 100;
-var damage = 1;
-var maxDamage = 10;
-var shotSpeed = 1;
-var maxShotSpeed = 10;
-
 var mousePosX;
 var mousePosY;
 var click = false;
-
-// Enemies have various health amounts/speeds
-var enemy1H = 2;
-var enemy1S = 3;
-
-var enemy2H = 5;
-var enemy2S = 2;
-
-var enemy3H = 10;
-var enemy3S = 1;
-
-//array that contains the random positions of the vectors
-var xPos = [];
-var yPos = [];
+var clickIndex;
 
 var i = 0;
 
-// Bool for handling laser shooting timing
-var isShooting = false;
-
 var gameOver = false;
-var level = 1;
-var enemyHealth1 = []; // array keeping track of each enemies health
-var enemyHealth2 = [];
-
-var enemyAlive1 = [];
-var enemyAlive2 = [];
-
 var winner = false; // When the player beats the last level set this guy to true
 
 var score = 0;
-
-// canv.addEventListener("mousedown", getPosClick, false);
-// canv.addEventListener("mouseenter", getPosHover, false);
 
 //TODO:: Modify
 function checkLevelComplete() {
@@ -199,9 +144,13 @@ $(document).ready(function () {
     });
 
     $("#gamespace").click(function () {
-        if (mousePosY < canv.height - upMenuHeight && isShooting == false) {
+        // if (mousePosY < canv.height) {
             // drawLaser();
-        }
+						console.log("hiya");
+						console.log(mousePosX + ", " + mousePosY);
+						clickIndex = Math.floor(mousePosY / 40) * 20 + Math.floor(mousePosX / 40);
+						console.log("index: " + clickIndex);
+        // }
 		click = false;
     });
 
