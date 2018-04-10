@@ -1,6 +1,9 @@
 var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
+// NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+var numColors = 4;
+
 var tomX = 780;
 var tomY = canv.height / 2;
 
@@ -36,20 +39,31 @@ function draw() {
 	if (setup) {
 		for (var i = 0; i < 20; i++) {
 			for (var j = 0; j < 20; j++) {
-				colorArr[i + j * 20] = Math.floor(Math.random() * 4);
-				if (colorArr[i + j * 20] === 0) {
-					ctx.fillStyle = "red";
+				if (numColors == 2) {
+					colorArr[i + j * 20] = Math.floor(Math.random() * 2);
+					if (colorArr[i + j * 20] === 0) {
+						ctx.fillStyle = "red";
+					}
+					else if (colorArr[i + j * 20] === 1) {
+						ctx.fillStyle = "blue";
+					}
 				}
-				else if (colorArr[i + j * 20] === 1) {
-					ctx.fillStyle = "blue";
+				else {
+					colorArr[i + j * 20] = Math.floor(Math.random() * 4);
+					if (colorArr[i + j * 20] === 0) {
+						ctx.fillStyle = "red";
+					}
+					else if (colorArr[i + j * 20] === 1) {
+						ctx.fillStyle = "blue";
+					}
+					else if (colorArr[i + j * 20] === 2) {
+						ctx.fillStyle = "yellow";
+					}
+					else if (colorArr[i + j * 20] === 3) {
+						ctx.fillStyle = "green";
+					}	
 				}
-				else if (colorArr[i + j * 20] === 2) {
-					ctx.fillStyle = "yellow";
-				}
-				else if (colorArr[i + j * 20] === 3) {
-					ctx.fillStyle = "green";
-				}
-	 			ctx.fillRect(i * 40 + 1, j * 40 + 1, 39, 39);
+				ctx.fillRect(i * 40 + 1, j * 40 + 1, 39, 39);
 				ctx.stroke();
 			}
 			setup = false;
