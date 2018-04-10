@@ -29,7 +29,6 @@ var setup = true;
 var gameOver = false;
 var winner = false; // When the player beats the last level set this guy to true
 
-var score = 0;
 
 //TODO:: Modify
 function checkLevelComplete() {
@@ -323,6 +322,7 @@ function checkAdjacency() {
 
 function updateScore() {
 	score += adjArr.length * (adjArr.length - 1); //adds number of blocks * number of blocks - 1 to the score
+	$('#score').text(score.toString());
 	//TODO:: draw the score to the page still
 	checkGame();
 }
