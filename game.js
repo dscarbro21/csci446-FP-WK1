@@ -73,34 +73,6 @@ var score = 0;
 // canv.addEventListener("mousedown", getPosClick, false);
 // canv.addEventListener("mouseenter", getPosHover, false);
 
-
-//TODO:: Don't need
-function checkHit() {
-	for (i = 0; i < 7; i++) {
-		if ((mousePosX >= xPos[i] + 1 && mousePosX <= xPos[i] + 46) && (mousePosY >= yPos[i] - 2 && mousePosY <= yPos[i] + 51)) {
-			hitSound.play();
-			if (level == 1) {
-				enemyHealth1[i] -= damage;
-				if (enemyHealth1[i] <= 0) {
-					enemyAlive1[i] = false;
-					score += 10;
-					coins += 5;
-				}
-			}
-			if (level == 2) {
-				enemyHealth2[i] -= damage;
-				if (enemyHealth2[i] <= 0) {
-					enemyAlive2[i] = false;
-					score += 30;
-					coins += 10;
-				}
-			}
-		}
-	}
-
-	checkLevelComplete();
-}
-
 //TODO:: Modify
 function checkLevelComplete() {
 	var levelComplete = true;
@@ -121,148 +93,6 @@ function checkLevelComplete() {
 	}
 }
 
-//TODO:: Don't need
-//buttons for health, damage, shot speed, medpack
-// function drawUpButton(text, x, y, cost) {
-//   ctx.fillStyle = "black";
-//   ctx.fillRect(x, y, upButtonWidth, upButtonHeight);
-//   if(click && mousePosX >= x && mousePosX <= x + upButtonWidth && mousePosY >= y && mousePosY <= y + upButtonHeight) {
-//     if(coins >= cost) {
-//       coins -= cost;
-//       if(text == "Health[1]") {
-//         maxHealth += 20;
-//         healthUpCost += 10;
-//         cost = healthUpCost;
-//       }
-//       else if(text == "Damage[2]") {
-//         damage += 1;
-//         damageUpCost += 10;
-//         cost = damageUpCost;
-//       }
-//       else if(text == "Shot Speed[3]") {
-//         shotSpeed += 1;
-//         speedUpCost += 10;
-//         cost = speedUpCost;
-//       }
-//       else if(text == "Med Pack[4]" && health != maxHealth) {
-//         if(health + 40 <= maxHealth) {
-//           health += 40;
-//         }
-// 		else {
-//           health = maxHealth;
-//         }
-//       }
-// 	  else if (health == maxHealth) {
-// 	    coins += cost;
-// 	  }
-//     }
-//     click = false;
-//     console.log(healthUpCost);
-//   }
-//   if(coins < cost) {
-//     ctx.fillStyle = "red"
-//   }
-//   else if(mousePosX >= x && mousePosX <= x + upButtonWidth && mousePosY >= y && mousePosY <= y + upButtonHeight) {
-//     ctx.fillStyle = "yellow";
-//   }
-//   else {
-//     ctx.fillStyle = "white";
-//   }
-//   ctx.fillRect(x + upButtonBorder, y + upButtonBorder, upButtonWidth - 2 * upButtonBorder, upButtonHeight - 2 * upButtonBorder);
-//   ctx.font = "20px Arial";
-//   ctx.textAlign = "center";
-//   ctx.fillStyle = "#000000";
-//   ctx.fillText(text, x + upButtonWidth / 2, y + upButtonHeight / 3 + 5);
-//   ctx.fillStyle = "#c19e00";
-//   ctx.fillText(cost, x + upButtonWidth / 2, y + 2 * upButtonHeight / 3 + 10);
-// }
-
-
-//TODO:: don't need
-// function drawUpgradeMenu() {
-//   ctx.fillStyle = "black";
-//   ctx.fillRect(0, canv.height - upMenuHeight, canv.width, upMenuHeight);
-//   ctx.fillStyle = "#b2eaff"; //upMenu bg color
-//   ctx.fillRect(upMenuBorder, canv.height - upMenuHeight + upMenuBorder, canv.width - 2 * upMenuBorder, upMenuHeight - 2 * upMenuBorder);
-//
-//   drawUpButton("Health[1]", healthUpX, upButtonYPos + canv.height - upMenuHeight, healthUpCost);
-//   drawUpButton("Damage[2]", damageUpX, upButtonYPos + canv.height - upMenuHeight, damageUpCost);
-//   drawUpButton("Shot Speed[3]", shotSpeedUpX, upButtonYPos + canv.height - upMenuHeight, speedUpCost);
-//   drawUpButton("Med Pack[4]", medPackX, upButtonYPos + canv.height - upMenuHeight, medPackCost);
-//
-//   ctx.font = "bold 40px Arial";
-//   ctx.fillText(coins, medPackX + upButtonWidth + (canv.width - 530 - upButtonWidth) / 2, canv.height - upMenuHeight / 3);
-// }
-
-//TODO::don't need
-// function drawHUD() {
-// 	ctx.fillStyle = "black";
-// 	ctx.fillRect(canv.width - (HUDwidth + 5), 5, HUDwidth, HUDheight);
-// 	if (isShooting) {
-// 		ctx.fillStyle = "#b2eaff";
-// 	}
-// 	else {
-// 		ctx.fillStyle = "#ff5151"
-// 	}
-// 	ctx.fillRect(canv.width - (HUDwidth + 4), 6, HUDwidth - 2, HUDheight - 2);
-//
-// 	ctx.fillStyle = "black";
-// 	ctx.textAlign = "left";
-// 	ctx.font = "20px Arial";
-// 	ctx.fillText("Health: " + Math.round(health) + "/" + maxHealth, canv.width - (HUDwidth + 3), HUDheight - 0);
-// 	ctx.fillText("Damage: " + damage, canv.width -(HUDwidth + 3), HUDheight - 25);
-// 	ctx.fillText("Shot Speed: " + shotSpeed, canv.width - (HUDwidth + 3), HUDheight - 50);
-// }
-
-//TODO::don't need
-function drawLaser() {
-	shootSound.play();
-	isShooting = true;
-
-	ctx.beginPath();
-	ctx.moveTo(tomX, tomY);
-	ctx.lineTo(mousePosX, mousePosY);
-	ctx.strokeStyle = "red";
-	ctx.stroke();
-
-	checkHit();
-	setTimeout(draw, 300*(maxShotSpeed - shotSpeed));
-	setTimeout(doneShooting, 300*(maxShotSpeed - shotSpeed));
-	click = false;
-}
-
-//TODO::don't need
-function doneShooting() {
-	isShooting = false;
-}
-
-//TODO::don't need
-// function drawEnemy() {
-//     var troll = document.getElementById("troll");
-//     var forever = document.getElementById("foreveralone");
-//
-//     for (i = 0; i < 7; i++) {
-//         if (level == 1) {
-//             if (enemyAlive1[i] == true) { //level one draws the troll meme.
-//                 ctx.drawImage(troll, xPos[i], yPos[i], 50, 50);
-//             }
-//         }
-//         else if (level == 2) {
-//             if (enemyAlive2[i] == true) { //level two draws the forever alone meme.
-//                 ctx.drawImage(forever, xPos[i], yPos[i], 50, 50);
-//             }
-//         }
-//     }
-// }
-
-//TODO::don't need
-function drawBaseLine() {
-  ctx.beginPath();
-	ctx.moveTo(baseX, 5 + HUDheight);
-	ctx.lineTo(baseX, canv.height - upMenuHeight);
-	ctx.strokeStyle = "red";
-	ctx.stroke();
-}
 
 //TODO::don't need
 function drawTom() {
@@ -276,12 +106,9 @@ function draw() {
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canv.width, canv.height);
 
+	//TODO::I don't know if I commented this out or not..
   // mousePos = getMousePos(event);
 
-  // drawUpgradeMenu();
-  // drawHUD();
-  // drawEnemy();
-  // drawBaseLine();
   drawTom();
 
   if(gameOver) {
@@ -300,7 +127,6 @@ function getMousePos(event) {
 	mousePosY = event.clientY - frame.top;
 
 	// draw();
-	// updateEnemies(event);
 }
 
 //TODO::keep
@@ -362,28 +188,6 @@ function updateLevel() {
 	level = 2;
 }
 
-//TODO:: don't need
-// function damageTom() { // need to truncate health or adjust speed
-//   if(health < 0) {
-// 	gameOverF();
-//   }
-//   else {
-// 	health -= 0.01;
-//   }
-// }
-
-//TODO:: don't need
-// function updateEnemies() {
-//   for (i = 0; i < 7; i++) {
-// 	if(xPos[i] + 0.3 < baseX) {
-// 	  xPos[i] += 0.3;
-// 	}
-// 	else {
-// 	  damageTom();
-// 	}
-//   }
-//   draw();
-// }
 
 //TODO::Don't need the keydown functions, just clicks
 $(document).ready(function () {
@@ -396,66 +200,26 @@ $(document).ready(function () {
 
     $("#gamespace").click(function () {
         if (mousePosY < canv.height - upMenuHeight && isShooting == false) {
-            drawLaser();
+            // drawLaser();
         }
 		click = false;
     });
-	$(document).keydown(function(e){
-		if (e.keyCode == 49) {
-			if (coins >= healthUpCost) {
-				coins -= healthUpCost;
-				maxHealth += 20;
-				healthUpCost += 10;
-			}
-		}
-	});
-	$(document).keydown(function(e){
-		if (e.keyCode == 50) {
-			if (coins >= damageUpCost) {
-				coins -= damageUpCost;
-				damage += 1;
-				damageUpCost += 10;
-			}
-		}
-	});
-	$(document).keydown(function(e){
-		if (e.keyCode == 51) {
-			if (coins >= speedUpCost) {
-				coins -= speedUpCost;
-				shotSpeed += 1;
-				speedUpCost += 10;
-			}
-		}
-	});
-	$(document).keydown(function(e){
-		if (e.keyCode == 52) {
-			if (coins >= medPackCost && health != maxHealth) {
-				coins -= medPackCost;
-				if (health + 50 <= maxHealth) {
-					health += 50;
-				}
-				else {
-					health = maxHealth;
-				}
-			}
-		}
-	});
 
-	//TODO::don't need
-	var x;
-	var y;
-	for (i = 0; i < 7; i++) {
-		x = Math.random() * 200;
-		y = Math.random() * 250 + 80;
-		Math.round(x);
-		Math.round(y);
-		xPos.push(x);
-		yPos.push(y);
-		enemyHealth1[i] = 3;
-		enemyHealth2[i] = 5;
-		enemyAlive1[i] = true;
-		enemyAlive2[i] = true;
-	}
+	//TODO::don't need -possibly useful?
+	// var x;
+	// var y;
+	// for (i = 0; i < 7; i++) {
+	// 	x = Math.random() * 200;
+	// 	y = Math.random() * 250 + 80;
+	// 	Math.round(x);
+	// 	Math.round(y);
+	// 	xPos.push(x);
+	// 	yPos.push(y);
+	// 	enemyHealth1[i] = 3;
+	// 	enemyHealth2[i] = 5;
+	// 	enemyAlive1[i] = true;
+	// 	enemyAlive2[i] = true;
+	// }
 
 	// drawEnemy();
 
