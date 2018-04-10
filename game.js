@@ -20,7 +20,8 @@ var adjArr = [];
 var checkedArr = [];
 var masterArr = [];
 
-
+var score = 0;
+var numBlocks = 400;
 
 var i = 0;
 
@@ -294,6 +295,10 @@ function checkAdjacency() {
 	if (adjArr.length > 0) {
 		ctx.fillRect(clickIndex % 20 * 40 + 1, Math.floor(clickIndex / 20) * 40 + 1, 39, 39);
 	}
+	
+	if (colorArr[clickIndex] != 4) { // if the user did not click on a gray square, update the score
+		updateScore();
+	}
 	notTop = notLeft = notRight = notBottom = false;
 	console.log("matches: " + adjArr.length);
 	//call a function to clear anything in adjArr at top (2s above)
@@ -310,8 +315,57 @@ function checkAdjacency() {
 	// 	masterArr[clickIndex] = 1;
 	// }
 	// nameThisLater();
+	console.log("color clicked: " + colorArr[clickIndex]);
+	
 	adjArr = [];
 
+}
+
+function updateScore() {
+	score += adjArr.length * (adjArr.length - 1); //adds number of blocks * number of blocks - 1 to the score
+	//TODO:: draw the score to the page still
+	checkGame();
+}
+
+function checkGame() {
+	numBlocks -= adjArr.length;
+	console.log("BLOCKS LEFT: " + numBlocks);
+	if(numBlocks == 0) {
+		winnerF();
+	}
+	else {
+		//check if any moves are left. 
+		for(var i = 0; i < 400; i++) {
+			//loop over colorArr, check all adj blocks for same color
+			//if one is found, break out of loop
+			//check left
+			if((i-1) >= 0 && colorArr[i-1] == colorArr[i] && colorArr[i] != 4) {
+				//match to the left
+				console.log("0")
+				return true;
+			} 
+			//check right
+			else if ((i + 1) <= 19 && colorArr[i+1] == colorArr[i] && colorArr[i] != 4) {
+				//match to the right
+				console.log("1");
+				return true;
+			}
+			//check up (-20)
+			else if ((i -20) >= 0 && colorArr[i-20] == colorArr[i] && colorArr[i] != 4) {
+				//match above
+				console.log("2");
+				return true;
+			}
+			//check down (+20)
+			else if ((i+20) <= 399 && colorArr[i+20] == colorArr[i] && colorArr[i] != 4) {
+				//match below
+				console.log("3");
+				return true;
+			}
+		}
+		//if no matches are found, call loser function
+		gameOverF();
+	}
 }
 
 // function nameThisLater() {
