@@ -10,10 +10,6 @@ var mousePosX;
 var mousePosY;
 var click = false;
 var clickIndex;
-// var notLeft = false;
-// var notTop = false;
-// var notRight = false;
-// var notBottom = false;
 
 var colorArr = [];
 var adjArr = [];
@@ -28,34 +24,6 @@ var i = 0;
 var setup = true;
 var gameOver = false;
 var winner = false; // When the player beats the last level set this guy to true
-
-
-//TODO:: Modify
-function checkLevelComplete() {
-	var levelComplete = true;
-	for (i = 0; i < 7; i++) {
-		if (level == 1 && enemyAlive1[i] == true) {
-			levelComplete = false;
-		}
-		if (level == 2 && enemyAlive2[i] == true) {
-			levelComplete = false;
-		}
-	}
-
-	if (levelComplete == true && level == 1) {
-		updateLevel();
-	}
-	if (levelComplete == true && level == 2) {
-		winner = true;
-	}
-}
-
-
-//TODO::don't need
-function drawTom() {
-    var tom = document.getElementById("tom");
-    ctx.drawImage(tom, baseX + 25, 200, 150, 150);
-}
 
 //TODO::modify
 function draw() {
@@ -129,8 +97,6 @@ function getMousePos(event) {
 	var frame = canv.getBoundingClientRect();
 	mousePosX = event.clientX - frame.left;
 	mousePosY = event.clientY - frame.top;
-
-	// draw();
 }
 
 function check(clindex) {
@@ -323,7 +289,6 @@ function checkAdjacency() {
 function updateScore() {
 	score += adjArr.length * (adjArr.length - 1); //adds number of blocks * number of blocks - 1 to the score
 	$('#score').text(score.toString());
-	//TODO:: draw the score to the page still
 	checkGame();
 }
 
@@ -592,3 +557,10 @@ $(document).ready(function () {
 //   updateEnemies();
 // }, 50)
 draw();
+
+function reset() {
+	score = 0;
+	setup = true;
+	$('#score').text(score.toString());
+	draw();
+}
