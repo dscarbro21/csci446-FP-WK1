@@ -332,6 +332,9 @@ function toTop() {
 				colorArr[adjArr[i]] = 4;
 				if (adjArr[i] >= 380) {
 					shiftRight(adjArr[i]);
+					for (var j = i + 1; j < adjArr.length; ++j) {
+						--adjArr[j];
+					}
 				}
 			}
 		}
@@ -390,7 +393,7 @@ function shiftRight(baseBlock) {
 			notDone = false;
 			continue;
 		}
-		//console.log(colArray);
+		console.log(colArray);
 		if (colorArr[baseBlock + 1] != 4) {
 			for (var i = 0; i < colArray.length; ++i) {
 				savedColor = colorArr[colArray[i] + 1];
@@ -409,7 +412,6 @@ function shiftRight(baseBlock) {
 	for (var i = 0; i < colArray.length; ++i) {
 		colorArr[colArray[i]] = 4;
 	}
-	console.log(colArray);
 }
 
 function updateScore() {
