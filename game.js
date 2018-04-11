@@ -313,6 +313,9 @@ function toTop() {
 			}
 			else {
 				colorArr[adjArr[i]] = 4;
+				if (adjArr[i] >= 380) {
+					shiftRight(adjArr[i]);
+				}
 			}
 		}
 		else {
@@ -349,6 +352,47 @@ function swap(riser) {
 	colorArr[riser] = 4;
 }
 
+function shiftRight(baseBlock) {
+	var notDone = true;
+	var colArray = [];
+	var savedColor;
+	if ((baseBlock - 19) % 20 == 0) {
+		notDone = false;
+		return;
+	}
+	
+	for (var i = 0; i < 20; ++i) {
+		colArray.push(baseBlock);
+		baseBlock -= 20;
+	}
+	baseBlock += 400;
+	console.log(colArray);
+	
+	while (notDone) {
+		if (baseBlock == 399) {
+			notDone = false;
+			continue;
+		}
+		if (colorArr[baseBlock + 1] != 4) {
+			for (var i = 0; i < colArray.length; ++i) {
+				savedColor = colorArr[colArray[i] + 1];
+				colorArr[colArray[i] + 1] = colorArr[colArray[i]];
+				colorArr[colArray[i]] = savedColor;
+				++colArray[i];
+			}
+			++baseBlock;
+		}
+		else {
+			notDone = false;
+		}
+		//notDone = false;
+	}
+	
+	for (var i = 0; i < colArray.length; ++i) {
+		colorArr[colArray[i]] = 4;
+	}
+}
+
 function updateScore() {
 	score += adjArr.length * (adjArr.length - 1); //adds number of blocks * number of blocks - 1 to the score
 	$('#score').text(score.toString());
@@ -358,7 +402,7 @@ function updateScore() {
 function checkGame() {
 	numBlocks -= adjArr.length;
 	console.log("BLOCKS LEFT: " + numBlocks);
-	if(numBlocks == 0) {
+	if (numBlocks == 0) {
 		winnerF();
 	}
 	else {
