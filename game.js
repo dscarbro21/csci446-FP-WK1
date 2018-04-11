@@ -2,7 +2,7 @@ var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
 // NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-var numColors = 4;
+var numColors = 2;
 
 var tomX = 780;
 var tomY = canv.height / 2;
@@ -93,10 +93,6 @@ function draw() {
 		}
 	}
 
-
-
-  drawTom();
-
   if(gameOver) {
     gameOverF();
   }
@@ -126,16 +122,16 @@ function check(clindex) {
 function checkAdjacency2(clindex) {
 	console.log("::CALL checkAdjacency(clindex)");
 	var notTop = notLeft = notRight = notBottom = false;
-	if (clindex % 20 === 0) {
+	if (clindex % 20 == 0) {
 		notLeft = true;
 	}
-	else if ((clindex - 19) % 20 === 0) {
+	if ((clindex - 19) % 20 == 0) {
 		notRight = true;
 	}
 	if (clindex < 20) {
 		notTop = true;
 	}
-	else if (clindex >= 380) {
+	if (clindex >= 380) {
 		notBottom = true;
 	}
 	if (notLeft == false) {
@@ -198,18 +194,19 @@ function checkAdjacency() {
 	var notAlone = false;
 	adjArr.push(clickIndex);
 	// masterArr[clickIndex] = 0;
-	if (clickIndex % 20 === 0) {
+	if (clickIndex % 20 == 0) {
 		notLeft = true;
 	}
-	else if ((clickIndex - 19) % 20 === 0) {
+	if ((clickIndex - 19) % 20 == 0) {
 		notRight = true;
 	}
 	if (clickIndex < 20) {
 		notTop = true;
 	}
-	else if (clickIndex >= 380) {
+	if (clickIndex >= 380) {
 		notBottom = true;
 	}
+	
 	if (notLeft == false) {
 		// check color
 
@@ -224,6 +221,7 @@ function checkAdjacency() {
 			checkAdjacency2(clickIndex -1);
 		}
 	}
+	
 	if (notRight == false) {
 		// check color
 		if (check(clickIndex + 1)) {
@@ -237,6 +235,7 @@ function checkAdjacency() {
 			checkAdjacency2(clickIndex + 1);
 		}
 	}
+	
 	if (notTop == false) {
 		// check color
 		if (check(clickIndex - 20)) {
@@ -250,6 +249,7 @@ function checkAdjacency() {
 			checkAdjacency2(clickIndex - 20);
 		}
 	}
+	
 	if (notBottom == false) {
 		// check color
 		if (check(clickIndex + 20)) {
@@ -264,7 +264,7 @@ function checkAdjacency() {
 		}
 	}
 	console.log("LENGTH" +  adjArr.length);
-	ctx.fillStyle = "gray";
+	/*ctx.fillStyle = "gray";
 	for (var i = 0; i < adjArr.length; ++i) {
 		console.log("YEET" + adjArr[i]);
 		console.log("x: " + adjArr[i] % 20 + " y: " + adjArr[i] / 20);
@@ -294,10 +294,59 @@ function checkAdjacency() {
 	// 	masterArr[clickIndex] = 1;
 	// }
 	// nameThisLater();
-	console.log("color clicked: " + colorArr[clickIndex]);
-	
+	console.log("color clicked: " + colorArr[clickIndex]);*/
+	console.log(adjArr);
+	if (adjArr.length > 1) {
+		toTop();
+		updateScore();
+	}
 	adjArr = [];
 
+}
+
+function toTop() {
+	adjArr.sort(function(a, b){return a - b});
+	for (var i = 0; i < adjArr.length; ++i) {
+		if (adjArr[i] - 20 >= 0) {
+			if (colorArr[adjArr[i] - 20] != 4) {
+				swap(adjArr[i]);
+			}
+			else {
+				colorArr[adjArr[i]] = 4;
+			}
+		}
+		else {
+			colorArr[adjArr[i]] = 4;
+		}
+	}
+	draw();
+}
+
+function swap(riser) {
+	var savedColor = colorArr[riser - 20];
+	colorArr[riser - 20] = colorArr[riser];
+	colorArr[riser] = savedColor;
+	riser -= 20;
+	
+	if (riser - 20 >= 0) {
+		var notDone = true;
+		while (notDone) {
+			if (riser - 20 < 0) {
+				notDone = false;
+				continue;
+			}
+			if (colorArr[riser - 20] != 4) {
+				savedColor = colorArr[riser - 20];
+				colorArr[riser - 20] = colorArr[riser];
+				colorArr[riser] = savedColor;
+				riser -= 20;
+			}
+			else {
+				notDone = false;
+			}
+		}
+	}
+	colorArr[riser] = 4;
 }
 
 function updateScore() {
