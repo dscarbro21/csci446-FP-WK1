@@ -2,7 +2,7 @@ var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
 // NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-var numColors = 2;
+var numColors = 1;
 
 var tomX = 780;
 var tomY = canv.height / 2;
@@ -39,13 +39,29 @@ function draw() {
 	if (setup) {
 		for (var i = 0; i < 20; i++) {
 			for (var j = 0; j < 20; j++) {
-				if (numColors == 2) {
+				if (numColors == 1) {
+					colorArr[i + j * 20] = 0;
+					ctx.fillStyle = "red";
+				}
+				else if (numColors == 2) {
 					colorArr[i + j * 20] = Math.floor(Math.random() * 2);
 					if (colorArr[i + j * 20] === 0) {
 						ctx.fillStyle = "red";
 					}
 					else if (colorArr[i + j * 20] === 1) {
 						ctx.fillStyle = "blue";
+					}
+				}
+				else if (numColors == 3) {
+					colorArr[i + j * 20] = Math.floor(Math.random() * 3);
+					if (colorArr[i + j * 20] === 0) {
+						ctx.fillStyle = "red";
+					}
+					else if (colorArr[i + j * 20] === 1) {
+						ctx.fillStyle = "blue";
+					}
+					else {
+						ctx.fillStyle = "yellow";
 					}
 				}
 				else {
@@ -100,6 +116,7 @@ function draw() {
     winnerF();
   }
 
+  //console.log(colorArr);
 }
 
 //TODO:: keep
@@ -112,7 +129,7 @@ function getMousePos(event) {
 function check(clindex) {
 	for (var i = 0; i < adjArr.length; i++) {
 		if (clindex == adjArr[i]) {
-			console.log("   copy found   " + clindex);
+			//console.log("   copy found   " + clindex);
 			return true;
 		}
 	}
@@ -120,7 +137,7 @@ function check(clindex) {
 }
 
 function checkAdjacency2(clindex) {
-	console.log("::CALL checkAdjacency(clindex)");
+	//console.log("::CALL checkAdjacency(clindex)");
 	var notTop = notLeft = notRight = notBottom = false;
 	if (clindex % 20 == 0) {
 		notLeft = true;
@@ -189,7 +206,7 @@ function checkAdjacency2(clindex) {
 }
 
 function checkAdjacency() {
-	console.log("::CALL checkAdjacency");
+	//console.log("::CALL checkAdjacency");
 	var notTop = notLeft = notRight = notBottom = false;
 	var notAlone = false;
 	adjArr.push(clickIndex);
@@ -295,7 +312,7 @@ function checkAdjacency() {
 	// }
 	// nameThisLater();
 	console.log("color clicked: " + colorArr[clickIndex]);*/
-	console.log(adjArr);
+	//console.log(adjArr);
 	if (adjArr.length > 1) {
 		toTop();
 		updateScore();
@@ -366,13 +383,14 @@ function shiftRight(baseBlock) {
 		baseBlock -= 20;
 	}
 	baseBlock += 400;
-	console.log(colArray);
+	//console.log(colArray);
 	
 	while (notDone) {
 		if (baseBlock == 399) {
 			notDone = false;
 			continue;
 		}
+		//console.log(colArray);
 		if (colorArr[baseBlock + 1] != 4) {
 			for (var i = 0; i < colArray.length; ++i) {
 				savedColor = colorArr[colArray[i] + 1];
@@ -391,6 +409,7 @@ function shiftRight(baseBlock) {
 	for (var i = 0; i < colArray.length; ++i) {
 		colorArr[colArray[i]] = 4;
 	}
+	console.log(colArray);
 }
 
 function updateScore() {
@@ -401,7 +420,7 @@ function updateScore() {
 
 function checkGame() {
 	numBlocks -= adjArr.length;
-	console.log("BLOCKS LEFT: " + numBlocks);
+	//console.log("BLOCKS LEFT: " + numBlocks);
 	if (numBlocks == 0) {
 		winnerF();
 	}
@@ -413,25 +432,25 @@ function checkGame() {
 			//check left
 			if((i-1) >= 0 && colorArr[i-1] == colorArr[i] && colorArr[i] != 4) {
 				//match to the left
-				console.log("0")
+				//console.log("0")
 				return true;
 			} 
 			//check right
 			else if ((i + 1) <= 19 && colorArr[i+1] == colorArr[i] && colorArr[i] != 4) {
 				//match to the right
-				console.log("1");
+				//console.log("1");
 				return true;
 			}
 			//check up (-20)
 			else if ((i -20) >= 0 && colorArr[i-20] == colorArr[i] && colorArr[i] != 4) {
 				//match above
-				console.log("2");
+				//console.log("2");
 				return true;
 			}
 			//check down (+20)
 			else if ((i+20) <= 399 && colorArr[i+20] == colorArr[i] && colorArr[i] != 4) {
 				//match below
-				console.log("3");
+				//console.log("3");
 				return true;
 			}
 		}
@@ -440,53 +459,13 @@ function checkGame() {
 	}
 }
 
-// function nameThisLater() {
-// 	for (var i = 0; i < adjArr.length; ++i) {
-// 		var yeet = false;
-// 		var dist = 20;
-// 		if (adjArr[i] - 20 < 0) {
-// 			// is it out of bounds???
-// 			masterArr[adjArr[i]] = 2;
-// 			colorArr[adjArr[i]] = 4;
-//
-// 			while (yeet == false) {
-// 				if (masterArr[adjArr[i] + dist] == 0) {
-// 					masterArr[adjArr[i] + dist] = 2;
-// 					colorArr[adjArr[i] + dist] = 4;
-// 					dist += 20;
-// 				}
-// 				else {
-// 					yeet = true;
-// 				}
-// 			}
-// 			// ?>??
-// 		}
-// 		else if (masterArr[adjArr[i] - 20] == 2) {
-// 			masterArr[adjArr[i]] = 2;
-// 			colorArr[adjArr[i]] = 4;
-//
-// 			while (yeet == false) {
-// 				if (masterArr[adjArr[i] + dist] == 0) {
-// 					masterArr[adjArr[i] + dist] = 2;
-// 					colorArr[adjArr[i] + dist] = 4;
-// 					dist += 20;
-// 				}
-// 				else {
-// 					yeet = true;
-// 				}
-// 			}
-// 			// ????
-// 		}
-// 	}
-// }
-
 function replace() {
 	for (var j = 0; j < 20; j++) {
 		for (var i = 0; i < 20; i++) {
 			if((masterArr[j + i*20] == 1 /*|| masterArr[j + i*20] == 2*/) && masterArr[j + (i + 1) * 20] == 0) { //start of empty, i is last nonempty
 				if (i == 0) {
 					var color = colorArr[j + (i + 1) * 20];
-					console.log("color:: " + color);
+					//console.log("color:: " + color);
 					for (var k = i + 2; k < 20; k++) {
 						if (colorArr[j + k * 20] != color || k == 19) {
 							colorArr[j + (k - 1) * 20] = colorArr[j + i * 20];
@@ -652,7 +631,7 @@ $(document).ready(function () {
         // if (mousePosY < canv.height) {
             // drawLaser();
 						clickIndex = Math.floor(mousePosY / 40) * 20 + Math.floor(mousePosX / 40);
-						console.log("index: " + clickIndex + "color: " + colorArr[clickIndex]);
+						//console.log("index: " + clickIndex + "color: " + colorArr[clickIndex]);
 						checkAdjacency();
         // }
 		click = false;
