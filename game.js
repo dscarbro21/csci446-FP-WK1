@@ -2,12 +2,7 @@ var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
 // NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-var numColors = 2;
-
-var tomX = 780;
-var tomY = canv.height / 2;
-
-var baseX = canv.width - 150;
+var numColors = 4;
 
 var mousePosX;
 var mousePosY;
@@ -16,8 +11,6 @@ var clickIndex;
 
 var colorArr = [];
 var adjArr = [];
-var checkedArr = [];
-var masterArr = [];
 
 var score = 0;
 var numBlocks = 400;
@@ -34,8 +27,6 @@ function draw() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canv.width, canv.height);
 
-	//TODO::I don't know if I commented this out or not..
-  // mousePos = getMousePos(event);
 	if (setup) {
 		for (var i = 0; i < 20; i++) {
 			for (var j = 0; j < 20; j++) {
@@ -115,11 +106,8 @@ function draw() {
   else if(winner) {
     winnerF();
   }
-
-  //console.log(colorArr);
 }
 
-//TODO:: keep
 function getMousePos(event) {
 	var frame = canv.getBoundingClientRect();
 	mousePosX = event.clientX - frame.left;
@@ -129,7 +117,6 @@ function getMousePos(event) {
 function check(clindex) {
 	for (var i = 0; i < adjArr.length; i++) {
 		if (clindex == adjArr[i]) {
-			//console.log("   copy found   " + clindex);
 			return true;
 		}
 	}
@@ -137,8 +124,6 @@ function check(clindex) {
 }
 
 function checkAdjacency2(clindex) {
-	console.log(adjArr);
-	console.log("::CALL checkAdjacency" + clindex);
 	var notTop = notLeft = notRight = notBottom = false;
 	if (clindex % 20 == 0) {
 		notLeft = true;
@@ -159,7 +144,6 @@ function checkAdjacency2(clindex) {
 		}
 		else if (colorArr[clindex - 1] == colorArr[clindex]) {
 			adjArr.push(clindex - 1);
-			masterArr[clindex -1] = 0;
 			// its adjacent
 			checkAdjacency2(clindex -1);
 		}
@@ -176,7 +160,6 @@ function checkAdjacency2(clindex) {
 		else if (colorArr[clindex + 1] == colorArr[clindex]) {
 			// its adjacent
 			adjArr.push(clindex + 1);
-			masterArr[clindex + 1] = 0;
 			checkAdjacency2(clindex + 1);
 		}
 	}
@@ -189,7 +172,6 @@ function checkAdjacency2(clindex) {
 		else if (colorArr[clindex - 20] == colorArr[clindex]) {
 			// its adjacent
 			adjArr.push(clindex - 20);
-			masterArr[clindex - 20] = 0;
 			checkAdjacency2(clindex - 20);
 		}
 	}
@@ -201,21 +183,15 @@ function checkAdjacency2(clindex) {
 		else if (colorArr[clindex + 20] == colorArr[clindex]) {
 			// its adjacent
 			adjArr.push(clindex + 20);
-			masterArr[clindex + 20] = 0;
 			checkAdjacency2(clindex + 20);
 		}
 	}
 	notTop = notLeft = notRight = notBottom = false;
-
-
 }
 
 function checkAdjacency() {
-	//console.log("::CALL checkAdjacency");
 	var notTop = notLeft = notRight = notBottom = false;
-	var notAlone = false;
 	adjArr.push(clickIndex);
-	// masterArr[clickIndex] = 0;
 	if (clickIndex % 20 == 0) {
 		notLeft = true;
 	}
@@ -236,16 +212,13 @@ function checkAdjacency() {
 
 		}
 		else if (colorArr[clickIndex - 1] == colorArr[clickIndex]) {
-			notAlone = true;
 			adjArr.push(clickIndex - 1);
-			masterArr[clickIndex -1] = 0;
 			// its adjacent
 			checkAdjacency2(clickIndex -1);
 		}
 	}
 	
 	if (notRight == false) {
-		//console.log(clickIndex);
 		// check color
 		if (check(clickIndex + 1)) {
 
@@ -254,9 +227,7 @@ function checkAdjacency() {
 		}
 		else if (colorArr[clickIndex + 1] == colorArr[clickIndex]) {
 			// its adjacent
-			notAlone = true;
 			adjArr.push(clickIndex + 1);
-			masterArr[clickIndex + 1] = 0;
 			checkAdjacency2(clickIndex + 1);
 		}
 	}
@@ -268,9 +239,7 @@ function checkAdjacency() {
 		}
 		else if (colorArr[clickIndex - 20] == colorArr[clickIndex]) {
 			// its adjacent
-			notAlone = true;
 			adjArr.push(clickIndex - 20);
-			masterArr[clickIndex - 20] = 0;
 			checkAdjacency2(clickIndex - 20);
 		}
 	}
@@ -282,45 +251,12 @@ function checkAdjacency() {
 		}
 		else if (colorArr[clickIndex + 20] == colorArr[clickIndex]) {
 			// its adjacent
-			notAlone = true;
 			adjArr.push(clickIndex + 20);
-			masterArr[clickIndex + 20] = 0;
 			checkAdjacency2(clickIndex + 20);
 		}
 	}
 	console.log("LENGTH" +  adjArr.length);
-	/*ctx.fillStyle = "gray";
-	for (var i = 0; i < adjArr.length; ++i) {
-		console.log("YEET" + adjArr[i]);
-		console.log("x: " + adjArr[i] % 20 + " y: " + adjArr[i] / 20);
-		ctx.fillRect(adjArr[i] % 20 * 40 + 1, Math.floor(adjArr[i] / 20) * 40 + 1, 39, 39);
-		ctx.stroke();
-	}
-	if (adjArr.length > 0) {
-		ctx.fillRect(clickIndex % 20 * 40 + 1, Math.floor(clickIndex / 20) * 40 + 1, 39, 39);
-	}
-	
-	if (colorArr[clickIndex] != 4) { // if the user did not click on a gray square, update the score
-		updateScore();
-	}
-	notTop = notLeft = notRight = notBottom = false;
-	console.log("matches: " + adjArr.length);
-	//call a function to clear anything in adjArr at top (2s above)
 
-	// if (adjArr.lenth >= 1) {
-		// adjArr.push(clickIndex);
-		// masterArr[clickIndex] = 0;
-		if (notAlone) {
-			masterArr[clickIndex] = 0;
-		}
-		replace();
-	// }
-	// else {
-	// 	masterArr[clickIndex] = 1;
-	// }
-	// nameThisLater();
-	console.log("color clicked: " + colorArr[clickIndex]);*/
-	//console.log(adjArr);
 	if (adjArr.length > 1) {
 		toTop();
 		updateScore();
@@ -394,7 +330,6 @@ function shiftRight(baseBlock) {
 		baseBlock -= 20;
 	}
 	baseBlock += 400;
-	//console.log(colArray);
 	
 	while (notDone) {
 		if (baseBlock == 399) {
@@ -414,7 +349,6 @@ function shiftRight(baseBlock) {
 		else {
 			notDone = false;
 		}
-		//notDone = false;
 	}
 	
 	for (var i = 0; i < colArray.length; ++i) {
@@ -430,7 +364,6 @@ function updateScore() {
 
 function checkGame() {
 	numBlocks -= adjArr.length;
-	//console.log("BLOCKS LEFT: " + numBlocks);
 	if (numBlocks == 0) {
 		winnerF();
 	}
@@ -469,112 +402,13 @@ function checkGame() {
 	}
 }
 
-function replace() {
-	for (var j = 0; j < 20; j++) {
-		for (var i = 0; i < 20; i++) {
-			if((masterArr[j + i*20] == 1 /*|| masterArr[j + i*20] == 2*/) && masterArr[j + (i + 1) * 20] == 0) { //start of empty, i is last nonempty
-				if (i == 0) {
-					var color = colorArr[j + (i + 1) * 20];
-					//console.log("color:: " + color);
-					for (var k = i + 2; k < 20; k++) {
-						if (colorArr[j + k * 20] != color || k == 19) {
-							colorArr[j + (k - 1) * 20] = colorArr[j + i * 20];
-							masterArr[j + (k - 1) * 20] = masterArr[j + i * 20];
-							for (var m = k - 2; m >= 0; m--) {
-								colorArr[j + m * 20] = 4;
-								masterArr[j + m * 20] = 2;
-							}
-							break;
-						}
-					}
-				}
-				else {
-					for (var k = i + 1; k < 20; k++) { //find end of empty //TODO::end of board check (k < 19)
-						if(masterArr[j + k*20] == 0 && (masterArr[j + (k+1) * 20] == 1 || k == 19)) { //end of empty at k
-							for(var m = 0; m <= i; m++) { // i is last block before start of empty
-								masterArr[j + (k - m) * 20] = masterArr[j + (i - m) * 20];
-								masterArr[j + (i - m) * 20] = 2;
-								colorArr[j + (k - m) * 20] = colorArr[j + (i - m) * 20];
-								colorArr[j + (i - m) * 20] = 4;
-								var rep = j + (k - m) * 20;
-								var orig = j + (i - m) * 20;
-							//	var old = j + (i - m) * 20;
-								// console.log("Replacing " + rep + " with " + orig);
-								// console.log("emptying  " + old);
-							}
-						}
-					}
-				}
-			}
-			else if (masterArr[j + i*20] == 2 && masterArr[j + (i + 1) * 20] == 0) {
-				console.log("burt reynolds");
-				if (i == 18) {
-					console.log("Queen Elizabeth");
-					for (var m = j; m < 19; m++) {
-						for (var s = 0; s < 20; s++) {
-							masterArr[m + s * 20] = masterArr[m + 1 + s * 20];
-							colorArr[m + s * 20] = colorArr[m + 1 + s * 20];
-						}
-					}
-					for (var s = 0; s < 20; s++) {
-						masterArr[19 + s * 20] = 2;
-						colorArr[19 + s * 20] = 4;
-					}
-				}
-				else {
-					for (var k = i + 2; k <= 20; k++) {
-						if (masterArr[j + k * 20] == 1) {
-							for (var m = i + 1; m < k; m++) {
-								colorArr[j + m * 20] = 4;
-								masterArr[j + m * 20] = 2;
-							}
-							break;
-						}
-						// do the squeeze here too oh well oops
-						else if (k == 19 && masterArr[j + k * 20] == 0) {
-							console.log("bob saget");
-							for (var m = j; m < 19; m++) {
-								for (var s = 0; s < 20; s++) {
-									masterArr[m + s * 20] = masterArr[m + 1 + s * 20];
-									colorArr[m + s * 20] = colorArr[m + 1 + s * 20];
-								}
-							}
-							for (var s = 0; s < 20; s++) {
-								masterArr[19 + s * 20] = 2;
-								colorArr[19 + s * 20] = 4;
-							}
-						}
-					}
-				}
-			}
-			else if (i == 0 && masterArr[j + i * 20] == 0) {
-				console.log("this guy");
-				for (var k = i + 1; k <= 20; k++) {
-					if (masterArr[j + k * 20] == 1 || k == 20) {
-						for (var m = i; m < k; m++) {
-							colorArr[j + m * 20] = 4;
-							masterArr[j + m * 20] = 2;
-						}
-						break;
-					}
-				}
-			}
-		}
-	}
-	draw();
-}
-
-//TODO::keep
 function getMouseClick(event) {
 	var frame = canv.getBoundingClientRect();
 	mousePosX = event.clientX - frame.left;
 	mousePosY = event.clientY - frame.top;
 	click = true;
-	// checkAdjacency();
-	// draw();
 }
 
-//TODO::keep/modify
 function winnerF() {
   ctx.fillStyle = "blue";
   ctx.textAlign = "center";
@@ -588,7 +422,6 @@ function winnerF() {
   ctx.drawImage(sperngeberb, canv.width / 2, 300, 200, 200);
 }
 
-//TODO::keep/modify
 function gameOverF() {
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
@@ -611,7 +444,6 @@ function gameOverF() {
 
 }
 
-//TODO:: don't need
 function updateLevel() {
 	for (i = 0; i < 7; i++) {
 		x = Math.random() * 200;
@@ -624,13 +456,8 @@ function updateLevel() {
 	level = 2;
 }
 
-
-//TODO::Don't need the keydown functions, just clicks
 $(document).ready(function () {
-	for (var i = 0; i < 400; i++) {
-		masterArr.push(1);
-	}
-		$("#instructionTitle").click(function () {
+	$("#instructionTitle").click(function () {
         $("#instructions").slideToggle("fast");
     });
     $("#instructions").click(function () {
@@ -648,10 +475,6 @@ $(document).ready(function () {
     });
 });
 
-//TODO::don't need
-// window.setInterval(function(){
-//   updateEnemies();
-// }, 50)
 draw();
 
 function reset() {
