@@ -2,7 +2,7 @@ var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
 // NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-var numColors = 1;
+var numColors = 2;
 
 var tomX = 780;
 var tomY = canv.height / 2;
@@ -137,7 +137,8 @@ function check(clindex) {
 }
 
 function checkAdjacency2(clindex) {
-	//console.log("::CALL checkAdjacency(clindex)");
+	console.log(adjArr);
+	console.log("::CALL checkAdjacency" + clindex);
 	var notTop = notLeft = notRight = notBottom = false;
 	if (clindex % 20 == 0) {
 		notLeft = true;
@@ -164,9 +165,13 @@ function checkAdjacency2(clindex) {
 		}
 	}
 	if (notRight == false) {
+		console.log(clindex + 1);
 		// check color
 		if (check(clindex + 1)) {
 
+		}
+		else if ((clindex - 19) % 20 == 0) {
+			
 		}
 		else if (colorArr[clindex + 1] == colorArr[clindex]) {
 			// its adjacent
@@ -240,9 +245,12 @@ function checkAdjacency() {
 	}
 	
 	if (notRight == false) {
+		//console.log(clickIndex);
 		// check color
 		if (check(clickIndex + 1)) {
 
+		}
+		else if ((clickIndex - 19) % 20 == 0) {
 		}
 		else if (colorArr[clickIndex + 1] == colorArr[clickIndex]) {
 			// its adjacent
