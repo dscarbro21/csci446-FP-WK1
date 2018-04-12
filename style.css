@@ -16,6 +16,7 @@
 	clear: both;
 	display: block;
 	border: 2px solid black;
+    margin-bottom: 50px;
 }
 
 #instructionTitle {
@@ -26,6 +27,7 @@
 	border-top: 1px solid black;
 	font-size: 0.75em;
 	display: none;
+    margin-top: 50px;
 }
 
 body {
@@ -45,4 +47,25 @@ aside {
 	clear: both;
 	display: block;
 	padding: 2px;
+}
+
+#scorezone {
+    border: 6px outset blue;
+    padding: 20px;
+    width: 200px;
+    margin-left:40px;
+    margin-top:80px;
+    background-color: pink;
+    font-family: "Luminari", monospace;
+    color: red;
+}
+
+#scorezone h3 {
+    font-size: 50px;
+}
+
+#score {
+    font-size: 30px;
+    font-weight: bolder;
+    color: purple;
 }

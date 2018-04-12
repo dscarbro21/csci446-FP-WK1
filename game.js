@@ -68,7 +68,7 @@ function draw() {
 					}
 					else if (colorArr[i + j * 20] === 3) {
 						ctx.fillStyle = "green";
-					}	
+					}
 				}
 				ctx.fillRect(i * 40 + 1, j * 40 + 1, 39, 39);
 				ctx.stroke();
@@ -155,7 +155,7 @@ function checkAdjacency2(clindex) {
 
 		}
 		else if ((clindex - 19) % 20 == 0) {
-			
+
 		}
 		else if (colorArr[clindex + 1] == colorArr[clindex]) {
 			// its adjacent
@@ -204,7 +204,7 @@ function checkAdjacency() {
 	if (clickIndex >= 380) {
 		notBottom = true;
 	}
-	
+
 	if (notLeft == false) {
 		// check color
 
@@ -217,7 +217,7 @@ function checkAdjacency() {
 			checkAdjacency2(clickIndex -1);
 		}
 	}
-	
+
 	if (notRight == false) {
 		// check color
 		if (check(clickIndex + 1)) {
@@ -231,7 +231,7 @@ function checkAdjacency() {
 			checkAdjacency2(clickIndex + 1);
 		}
 	}
-	
+
 	if (notTop == false) {
 		// check color
 		if (check(clickIndex - 20)) {
@@ -243,7 +243,7 @@ function checkAdjacency() {
 			checkAdjacency2(clickIndex - 20);
 		}
 	}
-	
+
 	if (notBottom == false) {
 		// check color
 		if (check(clickIndex + 20)) {
@@ -294,7 +294,7 @@ function swap(riser) {
 	colorArr[riser - 20] = colorArr[riser];
 	colorArr[riser] = savedColor;
 	riser -= 20;
-	
+
 	if (riser - 20 >= 0) {
 		var notDone = true;
 		while (notDone) {
@@ -324,13 +324,13 @@ function shiftRight(baseBlock) {
 		notDone = false;
 		return;
 	}
-	
+
 	for (var i = 0; i < 20; ++i) {
 		colArray.push(baseBlock);
 		baseBlock -= 20;
 	}
 	baseBlock += 400;
-	
+
 	while (notDone) {
 		if (baseBlock == 399) {
 			notDone = false;
@@ -350,7 +350,7 @@ function shiftRight(baseBlock) {
 			notDone = false;
 		}
 	}
-	
+
 	for (var i = 0; i < colArray.length; ++i) {
 		colorArr[colArray[i]] = 4;
 	}
@@ -368,7 +368,7 @@ function checkGame() {
 		winnerF();
 	}
 	else {
-		//check if any moves are left. 
+		//check if any moves are left.
 		for(var i = 0; i < 400; i++) {
 			//loop over colorArr, check all adj blocks for same color
 			//if one is found, break out of loop
@@ -377,7 +377,7 @@ function checkGame() {
 				//match to the left
 				//console.log("0")
 				return true;
-			} 
+			}
 			//check right
 			else if ((i + 1) <= 19 && colorArr[i+1] == colorArr[i] && colorArr[i] != 4) {
 				//match to the right
@@ -418,8 +418,8 @@ function winnerF() {
   var sperngeberb = document.getElementById("sperngeberb");
   var happy = document.getElementById("happy");
 
-  ctx.drawImage(happy, 50, 300, 180, 180);
-  ctx.drawImage(sperngeberb, canv.width / 2, 300, 200, 200);
+  ctx.drawImage(happy, 50, 200, 180, 180);
+  ctx.drawImage(sperngeberb, canv.width / 2, 450, 200, 200);
 }
 
 function gameOverF() {
@@ -432,8 +432,8 @@ function gameOverF() {
   var richmond = document.getElementById("richmond");
   var thomas = document.getElementById("thomas");
 
-  ctx.drawImage(marvin, canv.width / 2, 300, 200, 200);
-  ctx.drawImage(thomas, 50, 300, 180, 180);
+  ctx.drawImage(marvin, canv.width / 2, 600, 200, 200);
+  ctx.drawImage(thomas, 50, 400, 180, 180);
   ctx.drawImage(richmond, 60, 30, 180, 160);
 
   if(gameOver == false) {
