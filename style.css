@@ -69,3 +69,29 @@ aside {
     font-weight: bolder;
     color: purple;
 }
+
+#challenges-pix {
+	display: flex;
+	justify-content: space-between;
+	width: 60%;
+	flex-wrap: wrap;
+	overflow: hidden;
+	margin-left: 20%;
+ }
+ 
+#challenges-pix img {
+	margin: 5px 5px 0px;
+	height: 150px;
+	border: solid 1px black;
+	width: 150px;
+	object-fit: cover; 
+}
+
+#challenges-text {
+	display: flex;
+	justify-content: space-between;
+	width: 54%;
+	flex-wrap: wrap;
+	overflow: hidden;
+	margin-left: 23%;
+ }
