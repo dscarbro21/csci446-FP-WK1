@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<title>Same Game</title>
+		<meta charset="utf-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="./style.css">
+	</head>
+
+	<body>
+		<header>
+			<h1 id="title">Same Game</h1>
+		</header>
+
+		<section>
+			<img src="images/troll.jpg" alt="troll image" style="display:none;" id="troll" />
+			<img src="images/marvin.PNG" alt="minor mistake marvin image" style="display:none;" id="marvin" />
+			<img src="images/thomas.jpg" alt="angry thomas the tank engine image" style="display:none;" id="thomas" />
+			<img src="images/RICHMOND.jpg" alt="richmond ill wind image" style="display:none;" id="richmond" />
+			<img src="images/sperngeberb.jpg" alt="happy spongebob" style="display:none;" id="sperngeberb" />
+			<img src="images/happymeme.png" alt="im happy meme" style="display:none;" id="happy" />
+			<img src="images/tom.png" alt="tom" style="display:none; width:1%; height:1%;" id="tom" />
+			<img src="images/happymeme.png" alt="so happy meme" style="display:none; width:1%; height:1%;" id="happy" />
+
+			<div>
+				<div style="float:left; padding:50px" id="scorezone">
+					<h3>Score:</h3>
+					<p id="score">0</p>
+					<button onclick="reset()">Reset</button>
+				</div>
+				<div style="float:right; padding-right:30%">
+					<canvas id="gamespace" width="800" height="800" onmousemove="getMousePos(event)" onmousedown="getMouseClick(event)"></canvas>
+				</div>
+			</div>
+		</section>
+
+		<aside style="margin-top:50px;">
+			<h3 id="instructionTitle">How Do Play? Click Me!</h3>
+			<p id="instructions">
+				Click on boxes that are adjacent to other boxes of the same color. Try to clear the board!<br />
+			</p>
+		</aside>
+
+		<footer>
+			<h6>Authors: Daniel Scarbrough, Kayla Hjelmstad, Shane Kelley</h6>
+		</footer>
+	</body>
+
+	<script src="challenge1.js"></script>
+
+</html>
