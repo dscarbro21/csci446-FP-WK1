@@ -11,6 +11,8 @@ var clickIndex;
 
 var colorArr = [];
 var adjArr = [];
+var checkerRedArr = [];
+var checkerBlackArr = [];
 
 var score = 0;
 var numBlocks = 64;
@@ -26,84 +28,43 @@ function draw() {
   ctx.clearRect(0, 0, canv.width, canv.height);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canv.width, canv.height);
-
-	if (setup) {
-		for (var i = 0; i < 8; i++) {
-			for (var j = 0; j < 8; j++) {
-				if (numColors == 1) {
-					colorArr[i + j * 20] = 0;
-					ctx.fillStyle = "red";
-				}
-				else if (numColors == 2) {
-					if ((i + j) % 2 == 0) {
-						ctx.fillStyle = "indigo";
-					}
-					else {
-						ctx.fillStyle = "palegreen";
-					}
-					/* colorArr[i + j * 20] = Math.floor(Math.random() * 2);
-					if (colorArr[i + j * 20] === 0) {
-						ctx.fillStyle = "red";
-					}
-					else if (colorArr[i + j * 20] === 1) {
-						ctx.fillStyle = "blue";
-					} */
-				}
-				else if (numColors == 3) {
-					colorArr[i + j * 20] = Math.floor(Math.random() * 3);
-					if (colorArr[i + j * 20] === 0) {
-						ctx.fillStyle = "red";
-					}
-					else if (colorArr[i + j * 20] === 1) {
-						ctx.fillStyle = "blue";
-					}
-					else {
-						ctx.fillStyle = "yellow";
-					}
-				}
-				else {
-					colorArr[i + j * 20] = Math.floor(Math.random() * 4);
-					if (colorArr[i + j * 20] === 0) {
-						ctx.fillStyle = "red";
-					}
-					else if (colorArr[i + j * 20] === 1) {
-						ctx.fillStyle = "blue";
-					}
-					else if (colorArr[i + j * 20] === 2) {
-						ctx.fillStyle = "yellow";
-					}
-					else if (colorArr[i + j * 20] === 3) {
-						ctx.fillStyle = "green";
-					}
-				}
-				ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
-				ctx.stroke();
-			}
-			setup = false;
+  
+  // make checkerboard
+  for (var i = 0; i < 8; i++) {
+	for (var j = 0; j < 8; j++) {
+	  if ((i + j) % 2 == 0) {
+		ctx.fillStyle = "indigo";
+	  }
+	  else {
+		ctx.fillStyle = "palegreen";
+		if (i < 3) {
+			checkerBlackArr.push((i * 8) + j);
 		}
+		else if (i > 4) {
+			checkerRedArr.push((i * 8) + j);
+		}
+	  }	
+	  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
+	  ctx.stroke();
 	}
-	else {
-		for (var i = 0; i < 20; i++) {
-			for (var j = 0; j < 20; j++) {
-				if (colorArr[i + j * 20] === 0) {
-					ctx.fillStyle = "red";
-				}
-				else if (colorArr[i + j * 20] === 1) {
-					ctx.fillStyle = "blue";
-				}
-				else if (colorArr[i + j * 20] === 2) {
-					ctx.fillStyle = "yellow";
-				}
-				else if (colorArr[i + j * 20] === 3) {
-					ctx.fillStyle = "green";
-				}
-				else {
-					ctx.fillStyle = "gray";
-				}
-	 			ctx.fillRect(i * 40 + 1, j * 40 + 1, 39, 39);
-				ctx.stroke();
-			}
-		}
+  }
+  
+	// Display black checkers
+	for (var i = 0; i < checkerBlackArr.length; ++i) {
+		console.log((checkerBlackArr[i] / 8) * 100);
+		ctx.fillStyle = "black";
+		ctx.beginPath();
+		ctx.arc((checkerBlackArr[i] % 8) * 100 + 51, Math.floor((checkerBlackArr[i] / 8)) * 100 + 51, 40, 0, 2*Math.PI);
+		ctx.fill();
+	}
+	
+	// Display red checkers
+	for (var i = 0; i < checkerRedArr.length; ++i) {
+		console.log((checkerRedArr[i] / 8) * 100);
+		ctx.fillStyle = "red";
+		ctx.beginPath();
+		ctx.arc((checkerRedArr[i] % 8) * 100 + 51, Math.floor((checkerRedArr[i] / 8)) * 100 + 51, 40, 0, 2*Math.PI);
+		ctx.fill();
 	}
 
   if(gameOver) {
