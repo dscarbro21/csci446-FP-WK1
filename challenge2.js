@@ -5,6 +5,12 @@ CURRENT FUNCTIONALITY IS LISTED IN THIS COMMENT BLOCK --------------------------
 DRAWS INITIAL CHECKERBOARD AND CHECKERS in draw()
 CAN CHECK VALID MOVES AND BASIC JUMPS (no double jumps or more) in checkMoves()
 HIGHLIGHTS VALID MOVES FOR TESTING in checkMoves()
+PIECES MOVE IF VALID AND JUMPS KILL
+
+BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+THE LAST RED CHECKER IS HIGHLIGHTED EVERY TIME YOU TRY TO SHOW POSSIBLE MOVES
+IF THE LAST RED CHECKER MOVES, IT LEAVES BEHIND AN INDIGO CHECKER THAT DISAPPEARS AFTER THE NEXT MOVE
 
 */
 var canv = document.getElementById("gamespace");
@@ -18,13 +24,17 @@ var mousePosY;
 var click = false;
 var clickIndex;
 var displayMoves = true;
-var turn = "black";
+var turn = "Red";
+var moveReady = false;
+var startPos;
 
 var colorArr = [];
 var adjArr = [];
-var checkerRedArr = [];
-var checkerBlackArr = [];
+var redCheckers = [];
+var blackCheckers = [];
 var allCheckers = [];
+var validMove = [];
+var deathArr = [];
 
 var score = 0;
 var numBlocks = 64;
@@ -41,6 +51,8 @@ function draw() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canv.width, canv.height);
   
+  //console.log(redCheckers);
+  
   // make checkerboard
   for (var i = 0; i < 8; i++) {
 	for (var j = 0; j < 8; j++) {
@@ -49,43 +61,45 @@ function draw() {
 	  }
 	  else {
 		ctx.fillStyle = "palegreen";
-		if (i < 3) {
-			checkerBlackArr.push((i * 8) + j);
-			allCheckers.push((i * 8) + j);
-		}
-		else if (i > 4) {
-			checkerRedArr.push((i * 8) + j);
-			allCheckers.push((i * 8) + j);
+		if (setup) {
+			if (i < 3) {
+				blackCheckers.push((i * 8) + j);
+				allCheckers.push((i * 8) + j);
+			}
+			else if (i > 4) {
+				redCheckers.push((i * 8) + j);
+				allCheckers.push((i * 8) + j);
+			}
 		}
 	  }	
 	  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
-	  ctx.stroke();
+	  ctx.fill();
 	}
   }
+  setup = false;
   
-	/* checkerBlackArr.push(24);
-	checkerBlackArr.push(23);
-	checkerRedArr.push(33);
-	checkerRedArr.push(30);
+	/* blackCheckers.push(24);
+	blackCheckers.push(23);
+	redCheckers.push(33);
+	redCheckers.push(30);
 	allCheckers.push(24);
 	allCheckers.push(23);
 	allCheckers.push(33);
 	allCheckers.push(30); */
   
 	// Display black checkers
-	for (var i = 0; i < checkerBlackArr.length; ++i) {
+	for (var i = 0; i < blackCheckers.length; ++i) {
 		ctx.fillStyle = "black";
 		ctx.beginPath();
-		ctx.arc((checkerBlackArr[i] % 8) * 100 + 51, Math.floor((checkerBlackArr[i] / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
+		ctx.arc((blackCheckers[i] % 8) * 100 + 51, Math.floor((blackCheckers[i] / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 	
 	// Display red checkers
-	for (var i = 0; i < checkerRedArr.length; ++i) {
-		console.log((checkerRedArr[i] / 8) * 100);
+	for (var i = 0; i < redCheckers.length; ++i) {
 		ctx.fillStyle = "red";
 		ctx.beginPath();
-		ctx.arc((checkerRedArr[i] % 8) * 100 + 51, Math.floor((checkerRedArr[i] / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
+		ctx.arc((redCheckers[i] % 8) * 100 + 51, Math.floor((redCheckers[i] / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 
@@ -99,12 +113,13 @@ function draw() {
 
 // sees what moves can be used by the player when selecting a checker
 function checkMoves() {
+	console.log(turn);
+	// if the game is ready to execute a move, set that up first
 	var ownSpace = false;
-	var validMove = [];
 	// if the turn is red, check the red array
-	if (turn == "red") {
-		for (var i = 0; i < checkerRedArr.length; ++i) {
-			if (checkerRedArr[i] == clickIndex) {
+	if (turn == "Red") {
+		for (var i = 0; i < redCheckers.length; ++i) {
+			if (redCheckers[i] == clickIndex) {
 				ownSpace = true;
 				break;
 			}
@@ -113,6 +128,7 @@ function checkMoves() {
 			if ((clickIndex % 8) != 0) {
 				if (!spaceOccupied(clickIndex - 9)) {
 					validMove.push(clickIndex - 9);
+					deathArr.push(-1);
 				}
 				else {
 					if (spaceOccupiedByEnemy(clickIndex - 9)) {
@@ -120,6 +136,7 @@ function checkMoves() {
 						if ((clickIndex - 9) % 8 != 0) {
 							if (!spaceOccupied(clickIndex - 18)) {
 								validMove.push(clickIndex - 18);
+								deathArr.push(clickIndex - 9);
 							}
 						}
 					}
@@ -128,6 +145,7 @@ function checkMoves() {
 			if ((clickIndex % 8) != 7) {
 				if (!spaceOccupied(clickIndex - 7)) {
 					validMove.push(clickIndex - 7);
+					deathArr.push(-1);
 				}
 				else {
 					if (spaceOccupiedByEnemy(clickIndex - 7)) {
@@ -135,6 +153,7 @@ function checkMoves() {
 						if ((clickIndex - 7) % 8 != 7) {
 							if (!spaceOccupied(clickIndex - 14)) {
 								validMove.push(clickIndex - 14);
+								deathArr.push(clickIndex - 7);
 							}
 						}
 					}
@@ -145,8 +164,8 @@ function checkMoves() {
 	
 	// otherwise check the black array
 	else {
-		for (var i = 0; i < checkerBlackArr.length; ++i) {
-			if (checkerBlackArr[i] == clickIndex) {
+		for (var i = 0; i < blackCheckers.length; ++i) {
+			if (blackCheckers[i] == clickIndex) {
 				ownSpace = true;
 				break;
 			}
@@ -155,6 +174,7 @@ function checkMoves() {
 			if ((clickIndex % 8) != 0) {
 				if (!spaceOccupied(clickIndex + 7)) {
 					validMove.push(clickIndex + 7);
+					deathArr.push(-1);
 				}
 				else {
 					if (spaceOccupiedByEnemy(clickIndex + 7)) {
@@ -162,6 +182,7 @@ function checkMoves() {
 						if ((clickIndex + 7) % 8 != 0) {
 							if (!spaceOccupied(clickIndex + 14)) {
 								validMove.push(clickIndex + 14);
+								deathArr.push(clickIndex + 7);
 							}
 						}
 					}
@@ -170,6 +191,7 @@ function checkMoves() {
 			if ((clickIndex % 8) != 7) {
 				if (!spaceOccupied(clickIndex + 9)) {
 					validMove.push(clickIndex + 9);
+					deathArr.push(-1);
 				}
 				else {
 					if (spaceOccupiedByEnemy(clickIndex + 9)) {
@@ -177,12 +199,19 @@ function checkMoves() {
 						if ((clickIndex + 9) % 8 != 7) {
 							if (!spaceOccupied(clickIndex + 18)) {
 								validMove.push(clickIndex + 18);
+								deathArr.push(clickIndex + 9);
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	// if there are valid moves, say that a move is ready to be used
+	if (validMove.length != 0) {
+		moveReady = true;
+		startPos = clickIndex;
 	}
 	
 	// mark valid moves
@@ -208,22 +237,64 @@ function spaceOccupied(index) {
 
 // check if the checker at the index is the enemy's
 function spaceOccupiedByEnemy(index) {
-	if (turn == "red") {
-		for (var i = 0; i < checkerBlackArr.length; ++i) {
-			if (index == checkerBlackArr[i]) {
+	if (turn == "Red") {
+		for (var i = 0; i < blackCheckers.length; ++i) {
+			if (index == blackCheckers[i]) {
 				return true;
 			}
 		}
 	}
 	
 	else {
-		for (var i = 0; i < checkerRedArr.length; ++i) {
-			if (index == checkerRedArr[i]) {
+		for (var i = 0; i < redCheckers.length; ++i) {
+			if (index == redCheckers[i]) {
 				return true;
 			}
 		}
 	}
 	return false;
+}
+
+// makes a move (if valid)
+function makeMove() {
+	var num;
+	for (var i = 0; i < validMove.length; ++i) {
+		// if a proper move is chosen
+		if (clickIndex == validMove[i]) {
+			if (turn == "Red") {
+				num = redCheckers.indexOf(startPos);
+				redCheckers[num] = clickIndex;
+				num = allCheckers.indexOf(startPos);
+				allCheckers[num] = clickIndex;
+				turn = "Black";
+				// check for jump
+				if (deathArr[i] != -1) {
+					num = blackCheckers.indexOf(deathArr[i]);
+					blackCheckers.splice(num, 1);
+					num = allCheckers.indexOf(deathArr[i]);
+					allCheckers.splice(num, 1);
+				}
+			}
+			else {
+				num = blackCheckers.indexOf(startPos);
+				blackCheckers[num] = clickIndex;
+				num = allCheckers.indexOf(startPos);
+				allCheckers[num] = clickIndex;
+				turn = "Red";
+				// check for jump
+				if (deathArr[i] != -1) {
+					num = redCheckers.indexOf(deathArr[i]);
+					redCheckers.splice(num, 1);
+					num = allCheckers.indexOf(deathArr[i]);
+					allCheckers.splice(num, 1);
+				}
+			}
+		}
+	}
+	moveReady = false;
+	validMove = [];
+	deathArr = [];
+	draw();
 }
 
 function getMousePos(event) {
@@ -588,7 +659,12 @@ $(document).ready(function () {
 						clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
 						console.log("index: " + clickIndex);
 						//checkAdjacency();
-						checkMoves();
+						if (moveReady == false) {
+							checkMoves();
+						}
+						else {
+							makeMove();
+						}
         // }
 		click = false;
     });
