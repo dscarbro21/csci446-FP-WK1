@@ -6,6 +6,7 @@ DRAWS INITIAL CHECKERBOARD AND CHECKERS in draw()
 CAN CHECK VALID MOVES AND BASIC JUMPS (no double jumps or more) in checkMoves()
 HIGHLIGHTS VALID MOVES FOR TESTING in checkMoves()
 PIECES MOVE IF VALID AND JUMPS KILL
+PIECES CAN BECOME A KING (no special abilities yet)
 
 BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
@@ -54,6 +55,7 @@ var winner = false; // When the player beats the last level set this guy to true
 
 //TODO::modify
 function draw() {
+	ctx.font = "15px Arial";
   ctx.clearRect(0, 0, canv.width, canv.height);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canv.width, canv.height);
@@ -100,6 +102,10 @@ function draw() {
 		ctx.beginPath();
 		ctx.arc((blackCheckers[i].index % 8) * 100 + 51, Math.floor((blackCheckers[i].index / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
 		ctx.fill();
+		if (blackCheckers[i].king == true) {
+			ctx.fillStyle = "yellow";
+			ctx.fillText("King", (blackCheckers[i].index % 8) * 100 + 35, Math.floor((blackCheckers[i].index / 8)) * 100 + 51);
+		}
 	}
 	
 	// Display red checkers
@@ -108,6 +114,10 @@ function draw() {
 		ctx.beginPath();
 		ctx.arc((redCheckers[i].index % 8) * 100 + 51, Math.floor((redCheckers[i].index / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
 		ctx.fill();
+		if (redCheckers[i].king == true) {
+			ctx.fillStyle = "black";
+			ctx.fillText("King", (redCheckers[i].index % 8) * 100 + 35, Math.floor((redCheckers[i].index / 8)) * 100 + 51);
+		}
 	}
 
   if(gameOver) {
@@ -271,6 +281,10 @@ function makeMove() {
 			if (turn == "Red") {
 				for (var j = 0; j < redCheckers.length; ++j) {
 					if (redCheckers[j].index == startPos) {
+						if (clickIndex <= 7) {
+							redCheckers[j] = new Checker(clickIndex, true);
+							break;
+						}
 						redCheckers[j].index = clickIndex;
 						break;
 					}
@@ -293,6 +307,10 @@ function makeMove() {
 			else {
 				for (var j = 0; j < blackCheckers.length; ++j) {
 					if (blackCheckers[j].index == startPos) {
+						if (clickIndex >= 56) {
+							blackCheckers[j] = new Checker(clickIndex, true);
+							break;
+						}
 						blackCheckers[j].index = clickIndex;
 						break;
 					}
@@ -318,9 +336,6 @@ function makeMove() {
 	validMove = [];
 	deathArr = [];
 	draw();
-}
-
-function kingMe() {
 }
 
 function getMousePos(event) {
