@@ -13,6 +13,13 @@ THE LAST RED CHECKER IS HIGHLIGHTED EVERY TIME YOU TRY TO SHOW POSSIBLE MOVES
 IF THE LAST RED CHECKER MOVES, IT LEAVES BEHIND AN INDIGO CHECKER THAT DISAPPEARS AFTER THE NEXT MOVE
 
 */
+class Checker {
+	constructor(index, king) {
+		this.index = index;
+		this.king = king;
+	}
+}
+
 var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
@@ -63,11 +70,11 @@ function draw() {
 		ctx.fillStyle = "palegreen";
 		if (setup) {
 			if (i < 3) {
-				blackCheckers.push((i * 8) + j);
+				blackCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
 			}
 			else if (i > 4) {
-				redCheckers.push((i * 8) + j);
+				redCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
 			}
 		}
@@ -91,7 +98,7 @@ function draw() {
 	for (var i = 0; i < blackCheckers.length; ++i) {
 		ctx.fillStyle = "black";
 		ctx.beginPath();
-		ctx.arc((blackCheckers[i] % 8) * 100 + 51, Math.floor((blackCheckers[i] / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
+		ctx.arc((blackCheckers[i].index % 8) * 100 + 51, Math.floor((blackCheckers[i].index / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 	
@@ -99,7 +106,7 @@ function draw() {
 	for (var i = 0; i < redCheckers.length; ++i) {
 		ctx.fillStyle = "red";
 		ctx.beginPath();
-		ctx.arc((redCheckers[i] % 8) * 100 + 51, Math.floor((redCheckers[i] / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
+		ctx.arc((redCheckers[i].index % 8) * 100 + 51, Math.floor((redCheckers[i].index / 8)) * 100 + 51, 40, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 
@@ -119,7 +126,7 @@ function checkMoves() {
 	// if the turn is red, check the red array
 	if (turn == "Red") {
 		for (var i = 0; i < redCheckers.length; ++i) {
-			if (redCheckers[i] == clickIndex) {
+			if (redCheckers[i].index == clickIndex) {
 				ownSpace = true;
 				break;
 			}
@@ -165,7 +172,7 @@ function checkMoves() {
 	// otherwise check the black array
 	else {
 		for (var i = 0; i < blackCheckers.length; ++i) {
-			if (blackCheckers[i] == clickIndex) {
+			if (blackCheckers[i].index == clickIndex) {
 				ownSpace = true;
 				break;
 			}
@@ -239,7 +246,7 @@ function spaceOccupied(index) {
 function spaceOccupiedByEnemy(index) {
 	if (turn == "Red") {
 		for (var i = 0; i < blackCheckers.length; ++i) {
-			if (index == blackCheckers[i]) {
+			if (index == blackCheckers[i].index) {
 				return true;
 			}
 		}
@@ -247,7 +254,7 @@ function spaceOccupiedByEnemy(index) {
 	
 	else {
 		for (var i = 0; i < redCheckers.length; ++i) {
-			if (index == redCheckers[i]) {
+			if (index == redCheckers[i].index) {
 				return true;
 			}
 		}
@@ -262,29 +269,45 @@ function makeMove() {
 		// if a proper move is chosen
 		if (clickIndex == validMove[i]) {
 			if (turn == "Red") {
-				num = redCheckers.indexOf(startPos);
-				redCheckers[num] = clickIndex;
+				for (var j = 0; j < redCheckers.length; ++j) {
+					if (redCheckers[j].index == startPos) {
+						redCheckers[j].index = clickIndex;
+						break;
+					}
+				}
 				num = allCheckers.indexOf(startPos);
 				allCheckers[num] = clickIndex;
 				turn = "Black";
 				// check for jump
 				if (deathArr[i] != -1) {
-					num = blackCheckers.indexOf(deathArr[i]);
-					blackCheckers.splice(num, 1);
+					for (var j = 0; j < blackCheckers.length; ++j) {
+						if (blackCheckers[j].index == deathArr[i]) {
+							blackCheckers.splice(j, 1);
+							break;
+						}
+					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
 				}
 			}
 			else {
-				num = blackCheckers.indexOf(startPos);
-				blackCheckers[num] = clickIndex;
+				for (var j = 0; j < blackCheckers.length; ++j) {
+					if (blackCheckers[j].index == startPos) {
+						blackCheckers[j].index = clickIndex;
+						break;
+					}
+				}
 				num = allCheckers.indexOf(startPos);
 				allCheckers[num] = clickIndex;
 				turn = "Red";
 				// check for jump
 				if (deathArr[i] != -1) {
-					num = redCheckers.indexOf(deathArr[i]);
-					redCheckers.splice(num, 1);
+					for (var j = 0; j < redCheckers.length; ++j) {
+						if (redCheckers[j].index == deathArr[i]) {
+							redCheckers.splice(j, 1);
+							break;
+						}
+					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
 				}
@@ -295,6 +318,9 @@ function makeMove() {
 	validMove = [];
 	deathArr = [];
 	draw();
+}
+
+function kingMe() {
 }
 
 function getMousePos(event) {
