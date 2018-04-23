@@ -404,8 +404,6 @@ function makeMove() {
 				}
 				num = allCheckers.indexOf(startPos);
 				allCheckers[num] = clickIndex;
-				turn = "Black";
-				$("#turn").html("Turn: Black (Player 2)");
 				// check for jump
 				if (deathArr[i] != -1) {
 					for (var j = 0; j < blackCheckers.length; ++j) {
@@ -416,8 +414,10 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
-					checkMoreJumps();
+					//checkMoreJumps();
 				}
+				turn = "Black";
+				$("#turn").html("Turn: Black (Player 2)");
 			}
 			else {
 				for (var j = 0; j < blackCheckers.length; ++j) {
@@ -432,8 +432,6 @@ function makeMove() {
 				}
 				num = allCheckers.indexOf(startPos);
 				allCheckers[num] = clickIndex;
-				turn = "Red";
-				$("#turn").html("Turn: Red (Player 1)");
 				// check for jump
 				if (deathArr[i] != -1) {
 					for (var j = 0; j < redCheckers.length; ++j) {
@@ -444,8 +442,10 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
-					checkMoreJumps();
+					//checkMoreJumps();
 				}
+				turn = "Red";
+				$("#turn").html("Turn: Red (Player 1)");
 			}
 		}
 	}
@@ -455,14 +455,16 @@ function makeMove() {
 	draw();
 }
 
-// this checks for double jumps, triple jumps, etc.
+// this checks for double jumps, triple jumps, etc. ----------------------- WORK IN PROGRESS
 function checkMoreJumps() {
+	//console.log("OH YEAH");
 	draw();
 	deathArr = [];
 	validMove = [];
 	checkMoves();
 	for (var i = 0; i < deathArr.length; ++i) {
 		if (deathArr[i] != -1) {
+			console.log("DOOT");
 			makeMove();
 		}
 	}
