@@ -1,3 +1,6 @@
+<!-- "Cartoon Fire Flames Emoji Png Transparent" by Clipart.info is licensed under CC BY 4.0-->
+<!-- Cow emoji https://www.kisspng.com/png-cattle-emoji-train-symbol-sms-cow-628191/ -->
+
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
@@ -21,15 +24,21 @@
 			<img src="images/happymeme.png" alt="im happy meme" style="display:none;" id="happy" />
 			<img src="images/tom.png" alt="tom" style="display:none; width:1%; height:1%;" id="tom" />
 			<img src="images/happymeme.png" alt="so happy meme" style="display:none; width:1%; height:1%;" id="happy" />
+			<img src="images/fire.png" alt="fire" style="display:none;" id="fire" />
+			<img src="images/moo.png" alt="fire" style="display:none;" id="moo" />
 
 			<div>
 				<div style="float:left; padding:50px" id="scorezone">
 					<h3>Score:</h3>
 					<p id="score">0</p>
 					<button onclick="reset()">Reset</button>
+					<button onclick="setTimeout(end, 60000);drawBoard();">Start!</button>
 				</div>
-				<div style="float:right; padding-right:30%">
-					<canvas id="gamespace" width="800" height="800" onmousemove="getMousePos(event)" onmousedown="getMouseClick(event)"></canvas>
+				<div style="display: inline-block; padding-left:50px">
+					<canvas id="gamespace" width="800" height="800" onmousemove="getMousePos(event)" onmousedown="getMouseClick(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></canvas>
+				</div>
+				<div style="display:inline-block; position:relative; top:-400px; left:20px;">
+					<img src="images/dragon.PNG" id="boi" width="100" draggable="true" ondragstart="drag(event)"/>
 				</div>
 			</div>
 		</section>
@@ -45,6 +54,7 @@
 			<h6>Authors: Daniel Scarbrough, Kayla Hjelmstad, Shane Kelley</h6>
 		</footer>
 	</body>
+
 
 	<script src="challenge3.js"></script>
 
