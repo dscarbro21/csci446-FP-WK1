@@ -26,13 +26,21 @@
 			<img src="images/happymeme.png" alt="so happy meme" style="display:none; width:1%; height:1%;" id="happy" />
 			<img src="images/fire.png" alt="fire" style="display:none;" id="fire" />
 			<img src="images/moo.png" alt="fire" style="display:none;" id="moo" />
+			<img src="images/billy.png" alt="billy" style="display:none;" id="billy" />
+			<img src="images/burger.png" alt="burger" style="display:none;" id="burger"  />
+			<img src="images/rest_in_rip.png" alt="rip" style="display:none;" id="rip"  />
+
 
 			<div>
 				<div style="float:left; padding:50px" id="scorezone">
 					<h3>Score:</h3>
 					<p id="score">0</p>
 					<button onclick="reset()">Reset</button>
-					<button onclick="setTimeout(end, 60000);drawBoard();">Start!</button>
+					<button onclick="setTimeout(end, 20000);drawBoard();">Start!</button>
+					<div>
+						<h3>Top Score:</h3>
+						<span id = "displayScore"></span>
+					</div>
 				</div>
 				<div style="display: inline-block; padding-left:50px">
 					<canvas id="gamespace" width="800" height="800" onmousemove="getMousePos(event)" onmousedown="getMouseClick(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></canvas>
