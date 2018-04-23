@@ -292,6 +292,7 @@ function makeMove() {
 				num = allCheckers.indexOf(startPos);
 				allCheckers[num] = clickIndex;
 				turn = "Black";
+				$("#turn").html("Turn: Black (Player 2)");
 				// check for jump
 				if (deathArr[i] != -1) {
 					for (var j = 0; j < blackCheckers.length; ++j) {
@@ -318,6 +319,7 @@ function makeMove() {
 				num = allCheckers.indexOf(startPos);
 				allCheckers[num] = clickIndex;
 				turn = "Red";
+				$("#turn").html("Turn: Red (Player 1)");
 				// check for jump
 				if (deathArr[i] != -1) {
 					for (var j = 0; j < redCheckers.length; ++j) {
