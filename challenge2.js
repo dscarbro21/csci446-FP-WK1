@@ -24,20 +24,16 @@ class Checker {
 var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
-// NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-var numColors = 2;
+var displayMoves = true; // FOR TESTING MOVES
 
 var mousePosX;
 var mousePosY;
 var click = false;
 var clickIndex;
-var displayMoves = true;
 var turn = "Red";
 var moveReady = false;
 var startPos;
 
-var colorArr = [];
-var adjArr = [];
 var redCheckers = [];
 var blackCheckers = [];
 var allCheckers = [];
@@ -59,8 +55,6 @@ function draw() {
   ctx.clearRect(0, 0, canv.width, canv.height);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canv.width, canv.height);
-  
-  //console.log(redCheckers);
   
   // make checkerboard
   for (var i = 0; i < 8; i++) {
@@ -422,6 +416,7 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
+					checkMoreJumps();
 				}
 			}
 			else {
@@ -449,6 +444,7 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
+					checkMoreJumps();
 				}
 			}
 		}
@@ -459,252 +455,25 @@ function makeMove() {
 	draw();
 }
 
+// this checks for double jumps, triple jumps, etc.
+function checkMoreJumps() {
+	draw();
+	deathArr = [];
+	validMove = [];
+	checkMoves();
+	for (var i = 0; i < deathArr.length; ++i) {
+		if (deathArr[i] != -1) {
+			makeMove();
+		}
+	}
+	return;
+	
+}
+
 function getMousePos(event) {
 	var frame = canv.getBoundingClientRect();
 	mousePosX = event.clientX - frame.left;
 	mousePosY = event.clientY - frame.top;
-}
-
-function check(clindex) {
-	for (var i = 0; i < adjArr.length; i++) {
-		if (clindex == adjArr[i]) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function checkAdjacency2(clindex) {
-	var notTop = notLeft = notRight = notBottom = false;
-	if (clindex % 20 == 0) {
-		notLeft = true;
-	}
-	if ((clindex - 19) % 20 == 0) {
-		notRight = true;
-	}
-	if (clindex < 20) {
-		notTop = true;
-	}
-	if (clindex >= 380) {
-		notBottom = true;
-	}
-	if (notLeft == false) {
-		// check color
-		if (check(clindex -1)) {
-
-		}
-		else if (colorArr[clindex - 1] == colorArr[clindex]) {
-			adjArr.push(clindex - 1);
-			// its adjacent
-			checkAdjacency2(clindex -1);
-		}
-	}
-	if (notRight == false) {
-		console.log(clindex + 1);
-		// check color
-		if (check(clindex + 1)) {
-
-		}
-		else if ((clindex - 19) % 20 == 0) {
-
-		}
-		else if (colorArr[clindex + 1] == colorArr[clindex]) {
-			// its adjacent
-			adjArr.push(clindex + 1);
-			checkAdjacency2(clindex + 1);
-		}
-	}
-
-	if (notTop == false) {
-		// check color
-		if (check(clindex - 20)) {
-
-		}
-		else if (colorArr[clindex - 20] == colorArr[clindex]) {
-			// its adjacent
-			adjArr.push(clindex - 20);
-			checkAdjacency2(clindex - 20);
-		}
-	}
-	if (notBottom == false) {
-		// check color
-		if (check(clindex + 20)) {
-
-		}
-		else if (colorArr[clindex + 20] == colorArr[clindex]) {
-			// its adjacent
-			adjArr.push(clindex + 20);
-			checkAdjacency2(clindex + 20);
-		}
-	}
-	notTop = notLeft = notRight = notBottom = false;
-}
-
-function checkAdjacency() {
-	var notTop = notLeft = notRight = notBottom = false;
-	adjArr.push(clickIndex);
-	if (clickIndex % 20 == 0) {
-		notLeft = true;
-	}
-	if ((clickIndex - 19) % 20 == 0) {
-		notRight = true;
-	}
-	if (clickIndex < 20) {
-		notTop = true;
-	}
-	if (clickIndex >= 380) {
-		notBottom = true;
-	}
-
-	if (notLeft == false) {
-		// check color
-
-		if (check(clickIndex - 1)) {
-
-		}
-		else if (colorArr[clickIndex - 1] == colorArr[clickIndex]) {
-			adjArr.push(clickIndex - 1);
-			// its adjacent
-			checkAdjacency2(clickIndex -1);
-		}
-	}
-
-	if (notRight == false) {
-		// check color
-		if (check(clickIndex + 1)) {
-
-		}
-		else if ((clickIndex - 19) % 20 == 0) {
-		}
-		else if (colorArr[clickIndex + 1] == colorArr[clickIndex]) {
-			// its adjacent
-			adjArr.push(clickIndex + 1);
-			checkAdjacency2(clickIndex + 1);
-		}
-	}
-
-	if (notTop == false) {
-		// check color
-		if (check(clickIndex - 20)) {
-
-		}
-		else if (colorArr[clickIndex - 20] == colorArr[clickIndex]) {
-			// its adjacent
-			adjArr.push(clickIndex - 20);
-			checkAdjacency2(clickIndex - 20);
-		}
-	}
-
-	if (notBottom == false) {
-		// check color
-		if (check(clickIndex + 20)) {
-
-		}
-		else if (colorArr[clickIndex + 20] == colorArr[clickIndex]) {
-			// its adjacent
-			adjArr.push(clickIndex + 20);
-			checkAdjacency2(clickIndex + 20);
-		}
-	}
-	console.log("LENGTH" +  adjArr.length);
-
-	if (adjArr.length > 1) {
-		toTop();
-		updateScore();
-	}
-	adjArr = [];
-
-}
-
-function toTop() {
-	adjArr.sort(function(a, b){return a - b});
-	for (var i = 0; i < adjArr.length; ++i) {
-		if (adjArr[i] - 20 >= 0) {
-			if (colorArr[adjArr[i] - 20] != 4) {
-				swap(adjArr[i]);
-			}
-			else {
-				colorArr[adjArr[i]] = 4;
-				if (adjArr[i] >= 380) {
-					shiftRight(adjArr[i]);
-					for (var j = i + 1; j < adjArr.length; ++j) {
-						--adjArr[j];
-					}
-				}
-			}
-		}
-		else {
-			colorArr[adjArr[i]] = 4;
-		}
-	}
-	draw();
-}
-
-function swap(riser) {
-	var savedColor = colorArr[riser - 20];
-	colorArr[riser - 20] = colorArr[riser];
-	colorArr[riser] = savedColor;
-	riser -= 20;
-
-	if (riser - 20 >= 0) {
-		var notDone = true;
-		while (notDone) {
-			if (riser - 20 < 0) {
-				notDone = false;
-				continue;
-			}
-			if (colorArr[riser - 20] != 4) {
-				savedColor = colorArr[riser - 20];
-				colorArr[riser - 20] = colorArr[riser];
-				colorArr[riser] = savedColor;
-				riser -= 20;
-			}
-			else {
-				notDone = false;
-			}
-		}
-	}
-	colorArr[riser] = 4;
-}
-
-function shiftRight(baseBlock) {
-	var notDone = true;
-	var colArray = [];
-	var savedColor;
-	if ((baseBlock - 19) % 20 == 0) {
-		notDone = false;
-		return;
-	}
-
-	for (var i = 0; i < 20; ++i) {
-		colArray.push(baseBlock);
-		baseBlock -= 20;
-	}
-	baseBlock += 400;
-
-	while (notDone) {
-		if (baseBlock == 399) {
-			notDone = false;
-			continue;
-		}
-		console.log(colArray);
-		if (colorArr[baseBlock + 1] != 4) {
-			for (var i = 0; i < colArray.length; ++i) {
-				savedColor = colorArr[colArray[i] + 1];
-				colorArr[colArray[i] + 1] = colorArr[colArray[i]];
-				colorArr[colArray[i]] = savedColor;
-				++colArray[i];
-			}
-			++baseBlock;
-		}
-		else {
-			notDone = false;
-		}
-	}
-
-	for (var i = 0; i < colArray.length; ++i) {
-		colorArr[colArray[i]] = 4;
-	}
 }
 
 function updateScore() {
@@ -793,18 +562,6 @@ function gameOverF() {
 
   gameOver = true;
 
-}
-
-function updateLevel() {
-	for (i = 0; i < 7; i++) {
-		x = Math.random() * 200;
-		y = Math.random() * 250 + 80;
-		Math.round(x);
-		Math.round(y);
-		xPos[i] = x;
-		yPos[i] = y;
-	}
-	level = 2;
 }
 
 $(document).ready(function () {
