@@ -6,7 +6,7 @@ DRAWS INITIAL CHECKERBOARD AND CHECKERS in draw()
 CAN CHECK VALID MOVES AND BASIC JUMPS (no double jumps or more) in checkMoves()
 HIGHLIGHTS VALID MOVES FOR TESTING in checkMoves()
 PIECES MOVE IF VALID AND JUMPS KILL
-PIECES CAN BECOME A KING (no special abilities yet)
+PIECES CAN BECOME A KING WITH FULL KING FUNCTIONALITY
 
 BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
@@ -133,44 +133,105 @@ function checkMoves() {
 	console.log(turn);
 	// if the game is ready to execute a move, set that up first
 	var ownSpace = false;
+	var isKing = false;
+	
 	// if the turn is red, check the red array
 	if (turn == "Red") {
+		
+		// if a red checker was clicked on, say so by turning ownSpace = true -- and then checking if it is a king
 		for (var i = 0; i < redCheckers.length; ++i) {
 			if (redCheckers[i].index == clickIndex) {
 				ownSpace = true;
+				if (redCheckers[i].king == true) {
+					isKing = true;
+				}
 				break;
 			}
 		}
+		
+		// if red checker is clicked
 		if (ownSpace) {
-			if ((clickIndex % 8) != 0) {
-				if (!spaceOccupied(clickIndex - 9)) {
-					validMove.push(clickIndex - 9);
-					deathArr.push(-1);
-				}
-				else {
-					if (spaceOccupiedByEnemy(clickIndex - 9)) {
-						// determine if jumping is possible
-						if ((clickIndex - 9) % 8 != 0) {
-							if (!spaceOccupied(clickIndex - 18)) {
-								validMove.push(clickIndex - 18);
-								deathArr.push(clickIndex - 9);
+			
+			// moves for a king (moving down instead of only up)
+			if (isKing && clickIndex < 56) {
+				// if all the way on the left, don't go left!
+				if ((clickIndex % 8) != 0) {
+					// if the space is empty, mark it as available
+					if (!spaceOccupied(clickIndex + 7)) {
+						validMove.push(clickIndex + 7);
+						deathArr.push(-1);
+					}
+					// if space is occupied, check if you can jump it
+					else {
+						if (spaceOccupiedByEnemy(clickIndex + 7)) {
+							// determine if jumping is possible
+							if ((clickIndex + 7) % 8 != 0) {
+								if (!spaceOccupied(clickIndex + 14)) {
+									validMove.push(clickIndex + 14);
+									deathArr.push(clickIndex + 7);
+								}
 							}
 						}
 					}
 				}
-			}
-			if ((clickIndex % 8) != 7) {
-				if (!spaceOccupied(clickIndex - 7)) {
-					validMove.push(clickIndex - 7);
-					deathArr.push(-1);
+				// if all the way on the right, don't go right!
+				if ((clickIndex % 8) != 7) {
+					// if the space is empty, mark it as available
+					if (!spaceOccupied(clickIndex + 9)) {
+						validMove.push(clickIndex + 9);
+						deathArr.push(-1);
+					}
+					// if space is occupied, check if you can jump it
+					else {
+						if (spaceOccupiedByEnemy(clickIndex + 9)) {
+							// determine if jumping is possible
+							if ((clickIndex + 9) % 8 != 7) {
+								if (!spaceOccupied(clickIndex + 18)) {
+									validMove.push(clickIndex + 18);
+									deathArr.push(clickIndex + 9);
+								}
+							}
+						}
+					}
 				}
-				else {
-					if (spaceOccupiedByEnemy(clickIndex - 7)) {
-						// determine if jumping is possible
-						if ((clickIndex - 7) % 8 != 7) {
-							if (!spaceOccupied(clickIndex - 14)) {
-								validMove.push(clickIndex - 14);
-								deathArr.push(clickIndex - 7);
+				// check if the piece is all the way at the top -- if not, perform non-king move check too
+				if (clickIndex > 7) {
+					isKing = false;
+				}
+			}
+			
+			// moves for all pieces
+			if (!isKing) {
+				if ((clickIndex % 8) != 0) {
+					if (!spaceOccupied(clickIndex - 9)) {
+						validMove.push(clickIndex - 9);
+						deathArr.push(-1);
+					}
+					else {
+						if (spaceOccupiedByEnemy(clickIndex - 9)) {
+							// determine if jumping is possible
+							if ((clickIndex - 9) % 8 != 0) {
+								if (!spaceOccupied(clickIndex - 18)) {
+									validMove.push(clickIndex - 18);
+									deathArr.push(clickIndex - 9);
+								}
+							}
+						}
+					}
+				}
+				if ((clickIndex % 8) != 7) {
+					if (!spaceOccupied(clickIndex - 7)) {
+						validMove.push(clickIndex - 7);
+						deathArr.push(-1);
+					}
+					else {
+						if (spaceOccupiedByEnemy(clickIndex - 7)) {
+							// determine if jumping is possible
+							if ((clickIndex - 7) % 8 != 7) {
+								if (!spaceOccupied(clickIndex - 14)) {
+									validMove.push(clickIndex - 14);
+									deathArr.push(clickIndex - 7);
+								}
 							}
 						}
 					}
@@ -181,42 +242,100 @@ function checkMoves() {
 	
 	// otherwise check the black array
 	else {
+		// if a black checker was clicked on, say so by turning ownSpace = true -- and then checking if it is a king
 		for (var i = 0; i < blackCheckers.length; ++i) {
 			if (blackCheckers[i].index == clickIndex) {
 				ownSpace = true;
+				if (blackCheckers[i].king == true) {
+					isKing = true;
+				}
 				break;
 			}
 		}
+		
+		// if black checker was clicked
 		if (ownSpace) {
-			if ((clickIndex % 8) != 0) {
-				if (!spaceOccupied(clickIndex + 7)) {
-					validMove.push(clickIndex + 7);
-					deathArr.push(-1);
-				}
-				else {
-					if (spaceOccupiedByEnemy(clickIndex + 7)) {
-						// determine if jumping is possible
-						if ((clickIndex + 7) % 8 != 0) {
-							if (!spaceOccupied(clickIndex + 14)) {
-								validMove.push(clickIndex + 14);
-								deathArr.push(clickIndex + 7);
+			
+			// moves for a king (moving up instead of only down)
+			if (isKing && clickIndex > 7) {
+				// if all the way on the left, don't go left!
+				if ((clickIndex % 8) != 0) {
+					// if the space is empty, mark it as available
+					if (!spaceOccupied(clickIndex - 9)) {
+						validMove.push(clickIndex - 9);
+						deathArr.push(-1);
+					}
+					// if space is occupied, check if you can jump it
+					else {
+						if (spaceOccupiedByEnemy(clickIndex - 9)) {
+							// determine if jumping is possible
+							if ((clickIndex - 9) % 8 != 0) {
+								if (!spaceOccupied(clickIndex - 18)) {
+									validMove.push(clickIndex - 18);
+									deathArr.push(clickIndex - 9);
+								}
 							}
 						}
 					}
 				}
-			}
-			if ((clickIndex % 8) != 7) {
-				if (!spaceOccupied(clickIndex + 9)) {
-					validMove.push(clickIndex + 9);
-					deathArr.push(-1);
+				// if all the way on the right, don't go right!
+				if ((clickIndex % 8) != 7) {
+					// if the space is empty, mark it as available
+					if (!spaceOccupied(clickIndex - 7)) {
+						validMove.push(clickIndex - 7);
+						deathArr.push(-1);
+					}
+					// if space is occupied, check if you can jump it
+					else {
+						if (spaceOccupiedByEnemy(clickIndex - 7)) {
+							// determine if jumping is possible
+							if ((clickIndex + 9) % 8 != 7) {
+								if (!spaceOccupied(clickIndex - 14)) {
+									validMove.push(clickIndex - 14);
+									deathArr.push(clickIndex - 7);
+								}
+							}
+						}
+					}
 				}
-				else {
-					if (spaceOccupiedByEnemy(clickIndex + 9)) {
-						// determine if jumping is possible
-						if ((clickIndex + 9) % 8 != 7) {
-							if (!spaceOccupied(clickIndex + 18)) {
-								validMove.push(clickIndex + 18);
-								deathArr.push(clickIndex + 9);
+				// check if the piece is all the way at the bottom -- if not, perform non-king move check too
+				if (clickIndex < 56) {
+					isKing = false;
+				}
+			}
+			
+			// moves for all pieces
+			if (!isKing) {
+				if ((clickIndex % 8) != 0) {
+					if (!spaceOccupied(clickIndex + 7)) {
+						validMove.push(clickIndex + 7);
+						deathArr.push(-1);
+					}
+					else {
+						if (spaceOccupiedByEnemy(clickIndex + 7)) {
+							// determine if jumping is possible
+							if ((clickIndex + 7) % 8 != 0) {
+								if (!spaceOccupied(clickIndex + 14)) {
+									validMove.push(clickIndex + 14);
+									deathArr.push(clickIndex + 7);
+								}
+							}
+						}
+					}
+				}
+				if ((clickIndex % 8) != 7) {
+					if (!spaceOccupied(clickIndex + 9)) {
+						validMove.push(clickIndex + 9);
+						deathArr.push(-1);
+					}
+					else {
+						if (spaceOccupiedByEnemy(clickIndex + 9)) {
+							// determine if jumping is possible
+							if ((clickIndex + 9) % 8 != 7) {
+								if (!spaceOccupied(clickIndex + 18)) {
+									validMove.push(clickIndex + 18);
+									deathArr.push(clickIndex + 9);
+								}
 							}
 						}
 					}
