@@ -96,14 +96,14 @@ function draw() {
 	  else {
 		ctx.fillStyle = "palegreen";
 		if (setup) {
-			if (i < 3) {
+			/*if (i < 3) {
 				blackCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
 			}
 			else if (i > 4) {
 				redCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
-			}
+			}*/
 		}
 	  }	
 	  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
@@ -111,14 +111,18 @@ function draw() {
 	}
   }
   
-  /* if (setup) {
+  if (setup) {
 		blackCheckers.push(new Checker(42, false));
+		blackCheckers.push(new Checker(28, false));
+		blackCheckers.push(new Checker(14, false));
 		redCheckers.push(new Checker(49, false));
 		redCheckers.push(new Checker(30, false));
 		allCheckers.push(49);
 		allCheckers.push(30);
 		allCheckers.push(42);
-  } */
+		allCheckers.push(28);
+		allCheckers.push(14);
+  }
   setup = false;
   
 	// Display black checkers
@@ -157,6 +161,17 @@ function draw() {
   if(gameOver) {
     gameOverF();
   }
+}
+
+// checks if a jump is possible
+function checkJump(newIndex, deathIndex) {
+	if (!spaceOccupied(newIndex)) {
+		validMove.push(newIndex);
+		// deathArr contains arrays where the 0th index is the landing spot and the 1st index is who dies
+		deathArr.push([newIndex, deathIndex]);
+		return true;
+	}
+	return false;
 }
 
 // sees what moves can be used by the player when selecting a checker
@@ -509,19 +524,6 @@ function makeMove() {
 	}
 	moveReady = false;
 	draw();
-	if (doubleJump) {
-		if (displayMoves) {
-			ctx.strokeStyle = "yellow";
-			ctx.lineWidth = "10";
-			for (var i = 0; i < validMove.length; ++i) {
-				ctx.strokeRect((validMove[i] % 8) * 100 + 6, Math.floor((validMove[i] / 8)) * 100 + 6, 89, 89);
-			}
-			ctx.stroke();
-		}
-		console.log("H");
-		clickIndex = validMove[0];
-		makeMove();
-	}
 	validMove = [];
 	deathArr = [];
 }
@@ -679,5 +681,11 @@ function reset() {
 	setup = true;
 	$('#scorep1').text(scorep1.toString());
 	$('#scorep2').text(scorep2.toString());
+	redCheckers = [];
+	blackCheckers = [];
+	allCheckers = [];
 	draw();
+	moveReady = false;
+	validMove = [];
+	deathArr = [];
 }
