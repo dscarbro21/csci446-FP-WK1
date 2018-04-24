@@ -45,6 +45,9 @@ var scorep1 = 0;
 var scorep2 = 0;
 var numBlocks = 64;
 
+var time = 30;
+var timer;
+
 var i = 0;
 
 var setup = true;
@@ -53,6 +56,29 @@ var winner = "";
 
 //TODO::modify
 function draw() {
+	clearInterval(timer);
+	time = 30;
+	timer = setInterval(function() {
+		if (time == 0) {
+			if (turn == "Red") {
+				turn = "Black";
+				$("#turn").html("Turn: Black (Player 2)");
+			}
+			else {
+				turn = "Red";
+				$("#turn").html("Turn: Red (Player 1)");
+			}
+			draw();
+		}
+		--time;
+		if (time < 10) {
+			$("#timer").html("0:0" + time);
+		}
+		else {
+			$("#timer").html("0:" + time);
+		}
+		
+	}, 1000);
 	if (setup) {
 		$("#turn").html("Turn: Red (Player 1)");
 	}
