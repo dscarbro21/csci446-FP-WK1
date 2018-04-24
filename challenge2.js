@@ -82,7 +82,7 @@ function draw() {
 		else {
 			$("#timer").html("0:" + time);
 		}
-		
+
 	}, 1000);
 	if (setup) {
 		$("#turn").html("Turn: Red (Player 1)");
@@ -91,31 +91,31 @@ function draw() {
   ctx.clearRect(0, 0, canv.width, canv.height);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canv.width, canv.height);
-  
+
   // make checkerboard
   for (var i = 0; i < 8; i++) {
-	for (var j = 0; j < 8; j++) {
-	  if ((i + j) % 2 == 0) {
-		ctx.fillStyle = "indigo";
-	  }
-	  else {
-		ctx.fillStyle = "palegreen";
-		if (setup) {
-			if (i < 3) {
-				blackCheckers.push(new Checker(((i * 8) + j), false));
-				allCheckers.push((i * 8) + j);
-			}
-			else if (i > 4) {
-				redCheckers.push(new Checker(((i * 8) + j), false));
-				allCheckers.push((i * 8) + j);
-			}
+		for (var j = 0; j < 8; j++) {
+		  if ((i + j) % 2 == 0) {
+				ctx.fillStyle = "indigo";
+		  }
+		  else {
+				ctx.fillStyle = "palegreen";
+				if (setup) {
+					if (i < 3) {
+						blackCheckers.push(new Checker(((i * 8) + j), false));
+						allCheckers.push((i * 8) + j);
+					}
+					else if (i > 4) {
+						redCheckers.push(new Checker(((i * 8) + j), false));
+						allCheckers.push((i * 8) + j);
+					}
+				}
+		  }
+		  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
+		  ctx.fill();
 		}
-	  }	
-	  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
-	  ctx.fill();
-	}
   }
-  
+
   /*if (setup) {
 		blackCheckers.push(new Checker(42, false));
 		blackCheckers.push(new Checker(28, false));
@@ -129,7 +129,7 @@ function draw() {
 		allCheckers.push(14);
   }*/
   setup = false;
-  
+
 	// Display black checkers
 	for (var i = 0; i < blackCheckers.length; ++i) {
 		ctx.fillStyle = "black";
@@ -141,7 +141,7 @@ function draw() {
 			ctx.fillText("King", (blackCheckers[i].index % 8) * 100 + 35, Math.floor((blackCheckers[i].index / 8)) * 100 + 51);
 		}
 	}
-	
+
 	// Display red checkers
 	for (var i = 0; i < redCheckers.length; ++i) {
 		ctx.fillStyle = "red";
@@ -153,7 +153,7 @@ function draw() {
 			ctx.fillText("King", (redCheckers[i].index % 8) * 100 + 35, Math.floor((redCheckers[i].index / 8)) * 100 + 51);
 		}
 	}
-	
+
 	if (redCheckers.length == 0) {
 		gameOver = true;
 		winner = "Black";
@@ -174,10 +174,10 @@ function checkMoves() {
 	// if the game is ready to execute a move, set that up first
 	var ownSpace = false;
 	var isKing = false;
-	
+
 	// if the turn is red, check the red array
 	if (turn == "Red") {
-		
+
 		// if a red checker was clicked on, say so by turning ownSpace = true -- and then checking if it is a king
 		for (var i = 0; i < redCheckers.length; ++i) {
 			if (redCheckers[i].index == clickIndex) {
@@ -188,10 +188,10 @@ function checkMoves() {
 				break;
 			}
 		}
-		
+
 		// if red checker is clicked
 		if (ownSpace) {
-			
+
 			// moves for a king (moving down instead of only up)
 			if (isKing && clickIndex < 56) {
 				// if all the way on the left, don't go left!
@@ -239,7 +239,7 @@ function checkMoves() {
 					isKing = false;
 				}
 			}
-			
+
 			// moves for all pieces
 			if (!isKing) {
 				if ((clickIndex % 8) != 0) {
@@ -279,7 +279,7 @@ function checkMoves() {
 			}
 		}
 	}
-	
+
 	// otherwise check the black array
 	else {
 		// if a black checker was clicked on, say so by turning ownSpace = true -- and then checking if it is a king
@@ -292,10 +292,10 @@ function checkMoves() {
 				break;
 			}
 		}
-		
+
 		// if black checker was clicked
 		if (ownSpace) {
-			
+
 			// moves for a king (moving up instead of only down)
 			if (isKing && clickIndex > 7) {
 				// if all the way on the left, don't go left!
@@ -343,7 +343,7 @@ function checkMoves() {
 					isKing = false;
 				}
 			}
-			
+
 			// moves for all pieces
 			if (!isKing) {
 				if ((clickIndex % 8) != 0) {
@@ -383,13 +383,13 @@ function checkMoves() {
 			}
 		}
 	}
-	
+
 	// if there are valid moves, say that a move is ready to be used
 	if (validMove.length != 0) {
 		moveReady = true;
 		startPos = clickIndex;
 	}
-	
+
 	// mark valid moves
 	if (displayMoves) {
 		ctx.strokeStyle = "yellow";
@@ -397,7 +397,7 @@ function checkMoves() {
 		for (var i = 0; i < validMove.length; ++i) {
 			ctx.strokeRect((validMove[i] % 8) * 100 + 6, Math.floor((validMove[i] / 8)) * 100 + 6, 89, 89);
 		}
-		ctx.stroke();
+		// ctx.stroke();
 	}
 }
 
@@ -420,7 +420,7 @@ function spaceOccupiedByEnemy(index) {
 			}
 		}
 	}
-	
+
 	else {
 		for (var i = 0; i < redCheckers.length; ++i) {
 			if (index == redCheckers[i].index) {
@@ -475,7 +475,7 @@ function makeMove() {
 					$("#turn").html("Turn: Black (Player 2)");
 				}
 			}
-			
+
 			else {
 				for (var j = 0; j < blackCheckers.length; ++j) {
 					if (blackCheckers[j].index == startPos) {
@@ -538,7 +538,7 @@ function checkMoreJumps() {
 			moreJumps = true;
 		}
 	}
-	
+
 	if (moreJumps) {
 		for (var i = 0; i < deathArr.length; ++i) {
 			if (deathArr[i] == -1) {
@@ -556,7 +556,7 @@ function checkMoreJumps() {
 		}
 		return true;
 	}
-	
+
 	if (turn == "red") {
 		turn = "Red";
 		$("#turn").html("Turn: Red (Player 1)");
@@ -565,9 +565,9 @@ function checkMoreJumps() {
 		turn = "Black";
 		$("#turn").html("Turn: Black (Player 2)");
 	}
-	
+
 	return false;
-	
+
 }
 
 function getMousePos(event) {
