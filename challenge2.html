@@ -23,13 +23,22 @@
 			<img src="images/happymeme.png" alt="so happy meme" style="display:none; width:1%; height:1%;" id="happy" />
 
 			<div>
-				<div style="float:left" id="scorezone">
-					<h3>Player 1 Score:</h3>
-					<p id="scorep1">0</p>
-					<button onclick="reset()">Reset</button>
+				<div style="width:250px; float:left">
+					<div style="text-align:center" id="scorezone">
+						<button onclick="draw()">Start</button>
+						<button onclick="reset()">Reset</button>
+					</div>
+					<div style="text-align:center" id="scorezone">
+						<h3>Player 1 Score:</h3>
+						<p id="scorep1">0</p>
+					</div>
+					<div style="text-align:center" id="scorezone">
+						<h3>Player 2 Score:</h3>
+						<p id="scorep2">0</p>
+					</div>
 				</div>
 				<div style="float:right; padding-right:30%; text-align:center">
-					<h3 id="turn">Turn: Red (Player 1)</h3>
+					<h3 id="turn">Turn: ---</h3>
 					<canvas id="gamespace" width="800" height="800" onmousemove="getMousePos(event)" onmousedown="getMouseClick(event)"></canvas>
 				</div>
 			</div>

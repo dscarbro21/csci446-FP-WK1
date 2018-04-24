@@ -41,7 +41,8 @@ var allCheckers = [];
 var validMove = [];
 var deathArr = [];
 
-var score = 0;
+var scorep1 = 0;
+var scorep2 = 0;
 var numBlocks = 64;
 
 var i = 0;
@@ -52,6 +53,9 @@ var winner = "";
 
 //TODO::modify
 function draw() {
+	if (setup) {
+		$("#turn").html("Turn: Red (Player 1)");
+	}
 	ctx.font = "15px Arial";
   ctx.clearRect(0, 0, canv.width, canv.height);
   ctx.fillStyle = "black";
@@ -66,14 +70,14 @@ function draw() {
 	  else {
 		ctx.fillStyle = "palegreen";
 		if (setup) {
-			/*if (i < 3) {
+			if (i < 3) {
 				blackCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
 			}
 			else if (i > 4) {
 				redCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
-			}*/
+			}
 		}
 	  }	
 	  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
@@ -81,14 +85,14 @@ function draw() {
 	}
   }
   
-  if (setup) {
+  /* if (setup) {
 		blackCheckers.push(new Checker(42, false));
 		redCheckers.push(new Checker(49, false));
 		redCheckers.push(new Checker(30, false));
 		allCheckers.push(49);
 		allCheckers.push(30);
 		allCheckers.push(42);
-  }
+  } */
   setup = false;
   
 	// Display black checkers
@@ -644,11 +648,13 @@ $(document).ready(function () {
     });
 });
 
-draw();
+//draw();
 
 function reset() {
-	score = 0;
+	scorep1 = 0;
+	scorep2 = 0;
 	setup = true;
-	$('#score').text(score.toString());
+	$('#scorep1').text(scorep1.toString());
+	$('#scorep2').text(scorep2.toString());
 	draw();
 }

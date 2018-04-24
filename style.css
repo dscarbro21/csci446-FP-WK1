@@ -76,6 +76,12 @@ aside {
     color: purple;
 }
 
+#scorep2 {
+    font-size: 25px;
+    font-weight: bolder;
+    color: purple;
+}
+
 #challenges-pix {
 	display: flex;
 	justify-content: space-between;
