@@ -34,6 +34,7 @@ var clickIndex;
 var turn = "Red";
 var moveReady = false;
 var startPos;
+var doubleJump = false;
 
 var redCheckers = [];
 var blackCheckers = [];
@@ -163,17 +164,6 @@ function draw() {
   }
 }
 
-// checks if a jump is possible
-function checkJump(newIndex, deathIndex) {
-	if (!spaceOccupied(newIndex)) {
-		validMove.push(newIndex);
-		// deathArr contains arrays where the 0th index is the landing spot and the 1st index is who dies
-		deathArr.push([newIndex, deathIndex]);
-		return true;
-	}
-	return false;
-}
-
 // sees what moves can be used by the player when selecting a checker
 function checkMoves() {
 	console.log(turn);
@@ -203,7 +193,7 @@ function checkMoves() {
 				// if all the way on the left, don't go left!
 				if ((clickIndex % 8) != 0) {
 					// if the space is empty, mark it as available
-					if (!spaceOccupied(clickIndex + 7)) {
+					if (!spaceOccupied(clickIndex + 7) && !doubleJump) {
 						validMove.push(clickIndex + 7);
 						deathArr.push(-1);
 					}
@@ -223,7 +213,7 @@ function checkMoves() {
 				// if all the way on the right, don't go right!
 				if ((clickIndex % 8) != 7) {
 					// if the space is empty, mark it as available
-					if (!spaceOccupied(clickIndex + 9)) {
+					if (!spaceOccupied(clickIndex + 9) && !doubleJump) {
 						validMove.push(clickIndex + 9);
 						deathArr.push(-1);
 					}
@@ -249,7 +239,7 @@ function checkMoves() {
 			// moves for all pieces
 			if (!isKing) {
 				if ((clickIndex % 8) != 0) {
-					if (!spaceOccupied(clickIndex - 9)) {
+					if (!spaceOccupied(clickIndex - 9) && !doubleJump) {
 						validMove.push(clickIndex - 9);
 						deathArr.push(-1);
 					}
@@ -266,7 +256,7 @@ function checkMoves() {
 					}
 				}
 				if ((clickIndex % 8) != 7) {
-					if (!spaceOccupied(clickIndex - 7)) {
+					if (!spaceOccupied(clickIndex - 7) && !doubleJump) {
 						validMove.push(clickIndex - 7);
 						deathArr.push(-1);
 					}
@@ -307,7 +297,7 @@ function checkMoves() {
 				// if all the way on the left, don't go left!
 				if ((clickIndex % 8) != 0) {
 					// if the space is empty, mark it as available
-					if (!spaceOccupied(clickIndex - 9)) {
+					if (!spaceOccupied(clickIndex - 9) && !doubleJump) {
 						validMove.push(clickIndex - 9);
 						deathArr.push(-1);
 					}
@@ -327,7 +317,7 @@ function checkMoves() {
 				// if all the way on the right, don't go right!
 				if ((clickIndex % 8) != 7) {
 					// if the space is empty, mark it as available
-					if (!spaceOccupied(clickIndex - 7)) {
+					if (!spaceOccupied(clickIndex - 7) && !doubleJump) {
 						validMove.push(clickIndex - 7);
 						deathArr.push(-1);
 					}
@@ -353,7 +343,7 @@ function checkMoves() {
 			// moves for all pieces
 			if (!isKing) {
 				if ((clickIndex % 8) != 0) {
-					if (!spaceOccupied(clickIndex + 7)) {
+					if (!spaceOccupied(clickIndex + 7) && !doubleJump) {
 						validMove.push(clickIndex + 7);
 						deathArr.push(-1);
 					}
@@ -370,7 +360,7 @@ function checkMoves() {
 					}
 				}
 				if ((clickIndex % 8) != 7) {
-					if (!spaceOccupied(clickIndex + 9)) {
+					if (!spaceOccupied(clickIndex + 9) && !doubleJump) {
 						validMove.push(clickIndex + 9);
 						deathArr.push(-1);
 					}
@@ -440,7 +430,7 @@ function spaceOccupiedByEnemy(index) {
 // makes a move (if valid)
 function makeMove() {
 	var num;
-	var doubleJump = false;
+	doubleJump = false;
 	for (var i = 0; i < validMove.length; ++i) {
 		// if a proper move is chosen
 		if (clickIndex == validMove[i]) {
@@ -667,15 +657,25 @@ $(document).ready(function () {
     });
 
     $("#gamespace").click(function () {
-		clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
-		console.log("index: " + clickIndex);
-		if (moveReady == false) {
-			checkMoves();
+		if (doubleJump) {
+			for (var i = 0; i < validMove.length; ++i) {
+				if ((Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100)) == validMove[i]) {
+					clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
+					makeMove();
+				}
+			}
 		}
 		else {
-			makeMove();
+			clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
+			console.log("index: " + clickIndex);
+			if (moveReady == false) {
+				checkMoves();
+			}
+			else {
+				makeMove();
+			}
+			click = false;
 		}
-		click = false;
     });
 });
 
