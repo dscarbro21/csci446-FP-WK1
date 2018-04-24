@@ -12,7 +12,7 @@ BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
 THE LAST RED CHECKER IS HIGHLIGHTED EVERY TIME YOU TRY TO SHOW POSSIBLE MOVES
 IF THE LAST RED CHECKER MOVES, IT LEAVES BEHIND AN INDIGO CHECKER THAT DISAPPEARS AFTER THE NEXT MOVE
-
+IF IN THE MIDDLE OF A DOUBLE JUMP, YOU CAN SKIP TO ANOTHER PIECE
 */
 class Checker {
 	constructor(index, king) {
@@ -65,30 +65,38 @@ function draw() {
 	  else {
 		ctx.fillStyle = "palegreen";
 		if (setup) {
-			if (i < 3) {
+			/*if (i < 3) {
 				blackCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
 			}
 			else if (i > 4) {
 				redCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
-			}
+			}*/
 		}
 	  }	
 	  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
 	  ctx.fill();
 	}
   }
-  setup = false;
   
-	/* blackCheckers.push(24);
-	blackCheckers.push(23);
-	redCheckers.push(33);
-	redCheckers.push(30);
-	allCheckers.push(24);
-	allCheckers.push(23);
-	allCheckers.push(33);
-	allCheckers.push(30); */
+  if (setup) {
+		blackCheckers.push(new Checker(24, false));
+		blackCheckers.push(new Checker(23, false));
+		blackCheckers.push(new Checker(42, false));
+		blackCheckers.push(new Checker(28, false));
+		blackCheckers.push(new Checker(14, false));
+		redCheckers.push(new Checker(49, false));
+		redCheckers.push(new Checker(30, false));
+		allCheckers.push(24);
+		allCheckers.push(23);
+		allCheckers.push(49);
+		allCheckers.push(30);
+		allCheckers.push(42);
+		allCheckers.push(28);
+		allCheckers.push(14);
+  }
+  setup = false;
   
 	// Display black checkers
 	for (var i = 0; i < blackCheckers.length; ++i) {
@@ -388,6 +396,7 @@ function spaceOccupiedByEnemy(index) {
 // makes a move (if valid)
 function makeMove() {
 	var num;
+	var doubleJump = false;
 	for (var i = 0; i < validMove.length; ++i) {
 		// if a proper move is chosen
 		if (clickIndex == validMove[i]) {
@@ -414,10 +423,12 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
-					//checkMoreJumps();
+					doubleJump = checkMoreJumps();
 				}
-				turn = "Black";
-				$("#turn").html("Turn: Black (Player 2)");
+				if (!doubleJump) {
+					turn = "Black";
+					$("#turn").html("Turn: Black (Player 2)");
+				}
 			}
 			else {
 				for (var j = 0; j < blackCheckers.length; ++j) {
@@ -442,10 +453,12 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
-					//checkMoreJumps();
+					doubleJump = checkMoreJumps();
 				}
-				turn = "Red";
-				$("#turn").html("Turn: Red (Player 1)");
+				if (!doubleJump) {
+					turn = "Red";
+					$("#turn").html("Turn: Red (Player 1)");
+				}
 			}
 		}
 	}
@@ -462,13 +475,43 @@ function checkMoreJumps() {
 	deathArr = [];
 	validMove = [];
 	checkMoves();
+	moreJumps = false;
 	for (var i = 0; i < deathArr.length; ++i) {
 		if (deathArr[i] != -1) {
-			console.log("DOOT");
-			makeMove();
+			moreJumps = true;
 		}
 	}
-	return;
+	
+	if (moreJumps) {
+		moveReady = true;
+		for (var i = 0; i < deathArr.length; ++i) {
+			if (deathArr[i] == -1) {
+				deathArr.splice(i, 1);
+				validMove.splice(i, 1);
+			}
+		}
+		
+		if (displayMoves) {
+			ctx.strokeStyle = "yellow";
+			ctx.lineWidth = "10";
+			for (var i = 0; i < validMove.length; ++i) {
+				ctx.strokeRect((validMove[i] % 8) * 100 + 6, Math.floor((validMove[i] / 8)) * 100 + 6, 89, 89);
+			}
+			ctx.stroke();
+		}
+		return true;
+	}
+	
+	if (turn == "red") {
+		turn = "Red";
+		$("#turn").html("Turn: Red (Player 1)");
+	}
+	else {
+		turn = "Black";
+		$("#turn").html("Turn: Black (Player 2)");
+	}
+	
+	return false;
 	
 }
 
