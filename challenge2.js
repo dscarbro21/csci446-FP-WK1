@@ -452,13 +452,20 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
+					scorep1 += (time * 3);
+					$("#scorep1").html(scorep1.toString());
 					doubleJump = checkMoreJumps();
+				}
+				else {
+					scorep1 += time;
+					$("#scorep1").html(scorep1.toString());
 				}
 				if (!doubleJump) {
 					turn = "Black";
 					$("#turn").html("Turn: Black (Player 2)");
 				}
 			}
+			
 			else {
 				for (var j = 0; j < blackCheckers.length; ++j) {
 					if (blackCheckers[j].index == startPos) {
@@ -482,13 +489,20 @@ function makeMove() {
 					}
 					num = allCheckers.indexOf(deathArr[i]);
 					allCheckers.splice(num, 1);
+					scorep2 += (time * 3);
+					$("#scorep2").html(scorep2.toString());
 					doubleJump = checkMoreJumps();
+				}
+				else {
+					scorep2 += time;
+					$("#scorep2").html(scorep2.toString());
 				}
 				if (!doubleJump) {
 					turn = "Red";
 					$("#turn").html("Turn: Red (Player 1)");
 				}
 			}
+			break;
 		}
 	}
 	moveReady = false;
