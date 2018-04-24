@@ -526,6 +526,10 @@ function makeMove() {
 	draw();
 	validMove = [];
 	deathArr = [];
+	if (doubleJump) {
+		checkMoves();
+		moveReady = true;
+	}
 }
 
 // this checks for double jumps, triple jumps, etc. ----------------------- WORK IN PROGRESS
