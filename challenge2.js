@@ -7,13 +7,18 @@ CAN CHECK VALID MOVES AND BASIC JUMPS (no double jumps or more) in checkMoves()
 HIGHLIGHTS VALID MOVES FOR TESTING in checkMoves()
 PIECES MOVE IF VALID AND JUMPS KILL
 PIECES CAN BECOME A KING WITH FULL KING FUNCTIONALITY
+DOUBLE JUMPS TOTALLY WORK
 
 BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
 THE LAST RED CHECKER IS HIGHLIGHTED EVERY TIME YOU TRY TO SHOW POSSIBLE MOVES
 IF THE LAST RED CHECKER MOVES, IT LEAVES BEHIND AN INDIGO CHECKER THAT DISAPPEARS AFTER THE NEXT MOVE
-IF IN THE MIDDLE OF A DOUBLE JUMP, YOU CAN SKIP TO ANOTHER PIECE
-DOUBLE JUMPS WORK...AUTOMATICALLY. ITS A FEATURE NOT A BUG :(
+
+TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+
+CHECK IF THERE ARE NO MORE POSSIBLE MOVES
+ANIMATE PIECES
+
 */
 class Checker {
 	constructor(index, king) {
@@ -55,7 +60,6 @@ var setup = true;
 var gameOver = false;
 var winner = "";
 
-//TODO::modify
 function draw() {
 	clearInterval(timer);
 	time = 30;
@@ -97,14 +101,14 @@ function draw() {
 	  else {
 		ctx.fillStyle = "palegreen";
 		if (setup) {
-			/*if (i < 3) {
+			if (i < 3) {
 				blackCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
 			}
 			else if (i > 4) {
 				redCheckers.push(new Checker(((i * 8) + j), false));
 				allCheckers.push((i * 8) + j);
-			}*/
+			}
 		}
 	  }	
 	  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
@@ -112,7 +116,7 @@ function draw() {
 	}
   }
   
-  if (setup) {
+  /*if (setup) {
 		blackCheckers.push(new Checker(42, false));
 		blackCheckers.push(new Checker(28, false));
 		blackCheckers.push(new Checker(14, false));
@@ -123,7 +127,7 @@ function draw() {
 		allCheckers.push(42);
 		allCheckers.push(28);
 		allCheckers.push(14);
-  }
+  }*/
   setup = false;
   
 	// Display black checkers
@@ -522,9 +526,8 @@ function makeMove() {
 	}
 }
 
-// this checks for double jumps, triple jumps, etc. ----------------------- WORK IN PROGRESS
+// this checks for double jumps, triple jumps, etc.
 function checkMoreJumps() {
-	//console.log("OH YEAH");
 	draw();
 	deathArr = [];
 	validMove = [];
@@ -579,6 +582,7 @@ function updateScore() {
 	checkGame();
 }
 
+// EDIT THIS SO WE CAN CHECK FOR TIES
 function checkGame() {
 	numBlocks -= adjArr.length;
 	if (numBlocks == 0) {
@@ -627,15 +631,18 @@ function getMouseClick(event) {
 }
 
 function gameOverF() {
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "white";
   ctx.textAlign = "center";
 	ctx.font = "80px Arial";
 	if (winner == "Red") {
 		ctx.fillStyle = "black";
 		ctx.fillText("PLAYER 1 WINS", canv.width / 2, canv.height / 2);
 	}
-	else {
+	else if (winner == "Black") {
 		ctx.fillText("PLAYER 2 WINS", canv.width / 2, canv.height / 2);
+	}
+	else {
+		ctx.fillText("...You tied. Seriously?", canv.width / 2, canv.height / 2);
 	}
 
   var marvin = document.getElementById("marvin");
