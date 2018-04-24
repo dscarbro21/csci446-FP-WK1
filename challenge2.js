@@ -13,6 +13,7 @@ BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 THE LAST RED CHECKER IS HIGHLIGHTED EVERY TIME YOU TRY TO SHOW POSSIBLE MOVES
 IF THE LAST RED CHECKER MOVES, IT LEAVES BEHIND AN INDIGO CHECKER THAT DISAPPEARS AFTER THE NEXT MOVE
 IF IN THE MIDDLE OF A DOUBLE JUMP, YOU CAN SKIP TO ANOTHER PIECE
+DOUBLE JUMPS WORK...AUTOMATICALLY. ITS A FEATURE NOT A BUG :(
 */
 class Checker {
 	constructor(index, king) {
@@ -47,7 +48,7 @@ var i = 0;
 
 var setup = true;
 var gameOver = false;
-var winner = false; // When the player beats the last level set this guy to true
+var winner = "";
 
 //TODO::modify
 function draw() {
@@ -81,20 +82,12 @@ function draw() {
   }
   
   if (setup) {
-		blackCheckers.push(new Checker(24, false));
-		blackCheckers.push(new Checker(23, false));
 		blackCheckers.push(new Checker(42, false));
-		blackCheckers.push(new Checker(28, false));
-		blackCheckers.push(new Checker(14, false));
 		redCheckers.push(new Checker(49, false));
 		redCheckers.push(new Checker(30, false));
-		allCheckers.push(24);
-		allCheckers.push(23);
 		allCheckers.push(49);
 		allCheckers.push(30);
 		allCheckers.push(42);
-		allCheckers.push(28);
-		allCheckers.push(14);
   }
   setup = false;
   
@@ -121,12 +114,18 @@ function draw() {
 			ctx.fillText("King", (redCheckers[i].index % 8) * 100 + 35, Math.floor((redCheckers[i].index / 8)) * 100 + 51);
 		}
 	}
+	
+	if (redCheckers.length == 0) {
+		gameOver = true;
+		winner = "Black";
+	}
+	else if (blackCheckers.length == 0) {
+		gameOver = true;
+		winner = "Red";
+	}
 
   if(gameOver) {
     gameOverF();
-  }
-  else if(winner) {
-    winnerF();
   }
 }
 
@@ -463,9 +462,22 @@ function makeMove() {
 		}
 	}
 	moveReady = false;
+	draw();
+	if (doubleJump) {
+		if (displayMoves) {
+			ctx.strokeStyle = "yellow";
+			ctx.lineWidth = "10";
+			for (var i = 0; i < validMove.length; ++i) {
+				ctx.strokeRect((validMove[i] % 8) * 100 + 6, Math.floor((validMove[i] / 8)) * 100 + 6, 89, 89);
+			}
+			ctx.stroke();
+		}
+		console.log("H");
+		clickIndex = validMove[0];
+		makeMove();
+	}
 	validMove = [];
 	deathArr = [];
-	draw();
 }
 
 // this checks for double jumps, triple jumps, etc. ----------------------- WORK IN PROGRESS
@@ -483,14 +495,12 @@ function checkMoreJumps() {
 	}
 	
 	if (moreJumps) {
-		moveReady = true;
 		for (var i = 0; i < deathArr.length; ++i) {
 			if (deathArr[i] == -1) {
 				deathArr.splice(i, 1);
 				validMove.splice(i, 1);
 			}
 		}
-		
 		if (displayMoves) {
 			ctx.strokeStyle = "yellow";
 			ctx.lineWidth = "10";
@@ -591,7 +601,13 @@ function gameOverF() {
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
 	ctx.font = "80px Arial";
-	ctx.fillText("GAME OVER", canv.width / 2, canv.height / 2);
+	if (winner == "Red") {
+		ctx.fillStyle = "black";
+		ctx.fillText("PLAYER 1 WINS", canv.width / 2, canv.height / 2);
+	}
+	else {
+		ctx.fillText("PLAYER 2 WINS", canv.width / 2, canv.height / 2);
+	}
 
   var marvin = document.getElementById("marvin");
   var richmond = document.getElementById("richmond");
@@ -600,12 +616,6 @@ function gameOverF() {
   ctx.drawImage(marvin, canv.width / 2, 600, 200, 200);
   ctx.drawImage(thomas, 50, 400, 180, 180);
   ctx.drawImage(richmond, 60, 30, 180, 160);
-
-  if(gameOver == false) {
-	highscore(score);
-  }
-
-  gameOver = true;
 
 }
 
