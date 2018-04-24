@@ -434,6 +434,7 @@ function makeMove() {
 					if (redCheckers[j].index == startPos) {
 						if (clickIndex <= 7) {
 							redCheckers[j] = new Checker(clickIndex, true);
+							scorep1 += (time * 4);
 							break;
 						}
 						redCheckers[j].index = clickIndex;
@@ -471,6 +472,7 @@ function makeMove() {
 					if (blackCheckers[j].index == startPos) {
 						if (clickIndex >= 56) {
 							blackCheckers[j] = new Checker(clickIndex, true);
+							scorep2 += (time * 4);
 							break;
 						}
 						blackCheckers[j].index = clickIndex;
@@ -628,19 +630,6 @@ function getMouseClick(event) {
 	click = true;
 }
 
-function winnerF() {
-  ctx.fillStyle = "blue";
-  ctx.textAlign = "center";
-	ctx.font = "80px Arial";
-	ctx.fillText("WINNER", canv.width / 2, canv.height / 2);
-
-  var sperngeberb = document.getElementById("sperngeberb");
-  var happy = document.getElementById("happy");
-
-  ctx.drawImage(happy, 50, 200, 180, 180);
-  ctx.drawImage(sperngeberb, canv.width / 2, 450, 200, 200);
-}
-
 function gameOverF() {
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
@@ -672,23 +661,17 @@ $(document).ready(function () {
     });
 
     $("#gamespace").click(function () {
-        // if (mousePosY < canv.height) {
-            // drawLaser();
-						clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
-						console.log("index: " + clickIndex);
-						//checkAdjacency();
-						if (moveReady == false) {
-							checkMoves();
-						}
-						else {
-							makeMove();
-						}
-        // }
+		clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
+		console.log("index: " + clickIndex);
+		if (moveReady == false) {
+			checkMoves();
+		}
+		else {
+			makeMove();
+		}
 		click = false;
     });
 });
-
-//draw();
 
 function reset() {
 	scorep1 = 0;
