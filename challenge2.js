@@ -1,9 +1,3 @@
-/*
-TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-
-ANIMATE PIECES
-
-*/
 class Checker {
 	constructor(index, king) {
 		this.index = index;
@@ -185,6 +179,7 @@ function draw() {
 
 // sees what moves can be used by the player when selecting a checker
 function checkMoves() {
+	validMove = [];
 	// if the game is ready to execute a move, set that up first
 	var ownSpace = false;
 	var isKing = false;
@@ -368,7 +363,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex + 7)) {
 							// determine if jumping is possible
-							if ((clickIndex + 9) % 8 != 0) {
+							if ((clickIndex + 7) % 8 != 0) {
 								if (!spaceOccupied(clickIndex + 14)) {
 									validMove.push(clickIndex + 14);
 									deathArr.push(clickIndex + 7);
