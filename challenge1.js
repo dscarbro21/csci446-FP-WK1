@@ -193,6 +193,9 @@ function checkAdjacency2(clindex) {
 
 function checkAdjacency() {
 	var notTop = notLeft = notRight = notBottom = false;
+	if (colorArr[clickIndex] == 4) {
+		return;
+	}
 	adjArr.push(clickIndex);
 	if (clickIndex % 20 == 0) {
 		notLeft = true;
