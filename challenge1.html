@@ -22,7 +22,8 @@
 		</audio>
 		<audio id="redWins">
 			<source src="audio/RedWins.mp3">
-		</audio><audio id="roasted">
+		</audio>
+		<audio id="roasted">
 			<source src="audio/Roasted.mp3">
 		</audio>
 		<audio id="sameGameLoss">
@@ -56,7 +57,12 @@
 					<h3>Score:</h3>
 					<p id="score">0</p>
 					<button onclick="reset()">Reset</button>
+					<div>
+						<h3>Top Score:</h3>
+						<span id = "displayScore1"></span>
+					</div>
 				</div>
+
 				<div style="float:right; padding-right:30%">
 					<canvas id="gamespace" width="800" height="800" onmousemove="getMousePos(event)" onmousedown="getMouseClick(event)"></canvas>
 				</div>
