@@ -116,19 +116,36 @@ function draw() {
 		}
   }
 
-  /*if (setup) {
-		blackCheckers.push(new Checker(42, false));
-		blackCheckers.push(new Checker(28, false));
-		blackCheckers.push(new Checker(14, false));
-		redCheckers.push(new Checker(49, false));
-		redCheckers.push(new Checker(30, false));
-		allCheckers.push(49);
-		allCheckers.push(30);
-		allCheckers.push(42);
-		allCheckers.push(28);
-		allCheckers.push(14);
-  }*/
+	ctx.fillStyle = "palegreen";
+
+  // if (setup) {
+	// 	blackCheckers.push(new Checker(42, false));
+	// 	blackCheckers.push(new Checker(28, false));
+	// 	blackCheckers.push(new Checker(14, false));
+	// 	redCheckers.push(new Checker(49, false));
+	// 	redCheckers.push(new Checker(30, false));
+	// 	allCheckers.push(49);
+	// 	allCheckers.push(30);
+	// 	allCheckers.push(42);
+	// 	allCheckers.push(28);
+	// 	allCheckers.push(14);
+  // }
   setup = false;
+
+	var badChecker = false;
+	for (var i = 0; i < redCheckers.length; i++) {
+		if (redCheckers[i].index == 62) {
+			badChecker = true;
+		}
+	}
+
+	if (!badChecker) {
+		console.log("AHAHAHAHAHAHAHHAH");
+		ctx.fillStyle = "palegreen";
+		ctx.fillRect(6 * 100 + 1, 7 * 100 + 1, 99, 99);
+		// ctx.fillRect(62 * 100 + 1, 0, 80000, 4345435353);
+		ctx.fill();
+	}
 
 	// Display black checkers
 	for (var i = 0; i < blackCheckers.length; ++i) {
@@ -153,6 +170,8 @@ function draw() {
 			ctx.fillText("King", (redCheckers[i].index % 8) * 100 + 35, Math.floor((redCheckers[i].index / 8)) * 100 + 51);
 		}
 	}
+
+
 
 	if (redCheckers.length == 0) {
 		gameOver = true;
