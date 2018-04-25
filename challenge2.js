@@ -11,8 +11,6 @@ DOUBLE JUMPS TOTALLY WORK
 
 BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
-RESET DOESN'T HIDE THE IMAGES
-
 TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 CHECK IF THERE ARE NO MORE POSSIBLE MOVES
@@ -107,7 +105,7 @@ function draw() {
 		  }
 		  else {
 				ctx.fillStyle = "palegreen";
-				if (setup) {
+				/* if (setup) {
 					if (i < 3) {
 						blackCheckers.push(new Checker(((i * 8) + j), false));
 						allCheckers.push((i * 8) + j);
@@ -116,7 +114,7 @@ function draw() {
 						redCheckers.push(new Checker(((i * 8) + j), false));
 						allCheckers.push((i * 8) + j);
 					}
-				}
+				} */
 		  }
 		  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
 		  ctx.fill();
@@ -125,18 +123,18 @@ function draw() {
 
 	ctx.fillStyle = "palegreen";
 
-  /* if (setup) {
-	redCheckers.push(new Checker(42, false));
+  if (setup) {
+	redCheckers.push(new Checker(49, false));
 	redCheckers.push(new Checker(28, false));
 	redCheckers.push(new Checker(14, false));
-	blackCheckers.push(new Checker(49, true));
+	blackCheckers.push(new Checker(42, false));
 	redCheckers.push(new Checker(30, false));
 	allCheckers.push(49);
 	allCheckers.push(30);
 	allCheckers.push(42);
 	allCheckers.push(28);
 	allCheckers.push(14);
-  } */
+  }
   setup = false;
 
 	var badChecker = false;
@@ -147,7 +145,6 @@ function draw() {
 	}
 
 	if (!badChecker) {
-		console.log("AHAHAHAHAHAHAHHAH");
 		ctx.fillStyle = "palegreen";
 		ctx.fillRect(6 * 100 + 1, 7 * 100 + 1, 99, 99);
 		// ctx.fillRect(62 * 100 + 1, 0, 80000, 4345435353);
@@ -734,9 +731,10 @@ function reset() {
 	redCheckers = [];
 	blackCheckers = [];
 	allCheckers = [];
-	draw();
 	moveReady = false;
 	validMove = [];
 	deathArr = [];
 	turn = "Red";
+	gameOver = false;
+	draw();
 }
