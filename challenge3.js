@@ -156,6 +156,7 @@ function checkFire() {
   for (var i = 0; i < fireArr.length; i++) {
     for (var j = 0; j < cowArr.length; j++) {
       if (fireArr[i] == cowArr[j]) {
+				roasted.load();
 				roasted.play();
         score += 1; // change to burger pattie
         ctx.fillStyle = "cyan";
@@ -169,6 +170,7 @@ function checkFire() {
     }
     for (var k = 0; k < billyArr.length; k++) {
       if (fireArr[i] == billyArr[k]) {
+				og.load();
 				og.play();
 				score -= 2; //burning people is BAD
         ctx.fillStyle = "cyan";
@@ -200,12 +202,12 @@ function drawBoard() {
 function end() {
   alert("Game over! You scored: " + score);
   if (typeof(Storage) !== "undefined") {
-    if (score > localStorage.getItem("Score") || localStorage.getItem("Score") == null) {
-      localStorage.setItem("Score", score);
-      document.getElementById("displayScore3").innerHTML = localStorage.getItem("Score");
+    if (score > localStorage.getItem("score") || localStorage.getItem("score") == null) {
+      localStorage.setItem("score", score);
+      document.getElementById("displayScore4").innerHTML = localStorage.getItem("score");
     }
     else {
-      document.getElementById("displayScore3".innerHTML = "Sorry, your browser does not support Web Storage.");
+      document.getElementById("displayScore4".innerHTML = "Sorry, your browser does not support Web Storage.");
     }
   }
 	timeout.play();
@@ -871,25 +873,21 @@ $(document).ready(function () {
     });
 
     if (typeof(Storage) !== "undefined" ) {
-      if (localStorage.getItem("Score") == null) {
-        document.getElementById("displayScore3").innerHTML = "No High Score yet";
+      if (localStorage.getItem("score") == null) {
+        document.getElementById("displayScore4").innerHTML = "No High Score yet";
       }
       else {
-      document.getElementById("displayScore3").innerHTML = localStorage.getItem("Score");
+      document.getElementById("displayScore4").innerHTML = localStorage.getItem("score");
       }
     }
     else {
-      document.getElementById("displayScore3").innerHTML = "Sorry, your browser does not support Web Storage";
+      document.getElementById("displayScore4").innerHTML = "Sorry, your browser does not support Web Storage";
     }
 		frontPageScore = localStorage.getItem("Score");
 		getScore3();
 });
 
 draw();
-
-function getScore3() {
-	document.getElementById("score3").innerHTML = frontPageScore;
-}
 
 function reset() {
 	score = 0;
