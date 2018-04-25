@@ -1,19 +1,6 @@
 /*
-
-CURRENT FUNCTIONALITY IS LISTED IN THIS COMMENT BLOCK ----------------------------------------------------------------------
-
-DRAWS INITIAL CHECKERBOARD AND CHECKERS in draw()
-CAN CHECK VALID MOVES AND BASIC JUMPS (no double jumps or more) in checkMoves()
-HIGHLIGHTS VALID MOVES FOR TESTING in checkMoves()
-PIECES MOVE IF VALID AND JUMPS KILL
-PIECES CAN BECOME A KING WITH FULL KING FUNCTIONALITY
-DOUBLE JUMPS TOTALLY WORK
-
-BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-
 TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
-CHECK IF THERE ARE NO MORE POSSIBLE MOVES
 ANIMATE PIECES
 
 */
@@ -105,7 +92,7 @@ function draw() {
 		  }
 		  else {
 				ctx.fillStyle = "palegreen";
-				/* if (setup) {
+				if (setup) {
 					if (i < 3) {
 						blackCheckers.push(new Checker(((i * 8) + j), false));
 						allCheckers.push((i * 8) + j);
@@ -114,7 +101,7 @@ function draw() {
 						redCheckers.push(new Checker(((i * 8) + j), false));
 						allCheckers.push((i * 8) + j);
 					}
-				} */
+				}
 		  }
 		  ctx.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
 		  ctx.fill();
@@ -123,7 +110,7 @@ function draw() {
 
 	ctx.fillStyle = "palegreen";
 
-  if (setup) {
+  /* if (setup) {
 	redCheckers.push(new Checker(49, false));
 	redCheckers.push(new Checker(28, false));
 	redCheckers.push(new Checker(14, false));
@@ -134,7 +121,7 @@ function draw() {
 	allCheckers.push(42);
 	allCheckers.push(28);
 	allCheckers.push(14);
-  }
+  } */
   setup = false;
 
 	var badChecker = false;
@@ -186,6 +173,11 @@ function draw() {
 		winner = "Red";
 	}
 
+	if (checkGame()) {
+		gameOver = true;
+		winner = "";
+	}
+	
   if(gameOver) {
     gameOverF();
   }
@@ -193,8 +185,6 @@ function draw() {
 
 // sees what moves can be used by the player when selecting a checker
 function checkMoves() {
-	console.log(turn);
-	console.log("checkIndex:" + clickIndex);
 	// if the game is ready to execute a move, set that up first
 	var ownSpace = false;
 	var isKing = false;
@@ -554,7 +544,6 @@ function makeMove() {
 	if (doubleJump) {
 		checkMoves();
 		moveReady = true;
-		console.log(validMove);
 	}
 }
 
@@ -614,45 +603,32 @@ function updateScore() {
 	checkGame();
 }
 
-// EDIT THIS SO WE CAN CHECK FOR TIES
+// Checks for ties
 function checkGame() {
-	numBlocks -= adjArr.length;
-	if (numBlocks == 0) {
-		winnerF();
+	var holder = false;
+	if (displayMoves) {
+		holder = true;
+		displayMoves = false;
 	}
-	else {
-		//check if any moves are left.
-		for(var i = 0; i < 400; i++) {
-			//loop over colorArr, check all adj blocks for same color
-			//if one is found, break out of loop
-			//check left
-			if((i-1) >= 0 && colorArr[i-1] == colorArr[i] && colorArr[i] != 4) {
-				//match to the left
-				//console.log("0")
-				return true;
-			}
-			//check right
-			else if ((i + 1) <= 19 && colorArr[i+1] == colorArr[i] && colorArr[i] != 4) {
-				//match to the right
-				//console.log("1");
-				return true;
-			}
-			//check up (-20)
-			else if ((i -20) >= 0 && colorArr[i-20] == colorArr[i] && colorArr[i] != 4) {
-				//match above
-				//console.log("2");
-				return true;
-			}
-			//check down (+20)
-			else if ((i+20) <= 399 && colorArr[i+20] == colorArr[i] && colorArr[i] != 4) {
-				//match below
-				//console.log("3");
-				return true;
-			}
+	for (var i = 0; i < redCheckers.length; ++i) {
+		clickIndex = redCheckers[i].index;
+		checkMoves();
+		if (validMove.length > 0) {
+			moveReady = false;
+			displayMoves = holder;
+			return false;
 		}
-		//if no matches are found, call loser function
-		gameOverF();
 	}
+	for (var i = 0; i < blackCheckers.length; ++i) {
+		clickIndex = blackCheckers[i].index;
+		checkMoves();
+		if (validMove.length > 0) {
+			moveReady = false;
+			displayMoves = holder;
+			return false;
+		}
+	}
+	return true;
 }
 
 function getMouseClick(event) {
@@ -677,6 +653,7 @@ function gameOverF() {
 		ctx.fillText("PLAYER 2 WINS", canv.width / 2, canv.height / 2);
 	}
 	else {
+		tieCheckers.play();
 		ctx.fillText("...You tied. Seriously?", canv.width / 2, canv.height / 2);
 	}
 
@@ -703,6 +680,7 @@ $(document).ready(function () {
 			for (var i = 0; i < validMove.length; ++i) {
 				if ((Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100)) == validMove[i]) {
 					clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
+					dJumpAudio.load();
 					dJumpAudio.play();
 					makeMove();
 				}
