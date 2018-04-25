@@ -156,6 +156,7 @@ function checkFire() {
   for (var i = 0; i < fireArr.length; i++) {
     for (var j = 0; j < cowArr.length; j++) {
       if (fireArr[i] == cowArr[j]) {
+				roasted.load();
 				roasted.play();
         score += 1; // change to burger pattie
         ctx.fillStyle = "cyan";
@@ -169,6 +170,7 @@ function checkFire() {
     }
     for (var k = 0; k < billyArr.length; k++) {
       if (fireArr[i] == billyArr[k]) {
+				og.load();
 				og.play();
 				score -= 2; //burning people is BAD
         ctx.fillStyle = "cyan";
@@ -886,10 +888,6 @@ $(document).ready(function () {
 });
 
 draw();
-
-function getScore3() {
-	document.getElementById("score3").innerHTML = frontPageScore;
-}
 
 function reset() {
 	score = 0;
