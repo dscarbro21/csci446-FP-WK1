@@ -107,3 +107,19 @@ aside {
 	overflow: hidden;
 	margin-left: 23%;
  }
+ 
+ #links {
+	text-align: center;
+	background-color: purple;
+	padding: 25px;
+ }
+ 
+ #links a {
+	color: #ff0a4b;
+	border: solid 5px #ff0a4b;
+	border-radius: 5px;
+	padding: 15px;
+	margin-left: 5px;
+	margin-right: 5px;
+	text-decoration: none;
+ }

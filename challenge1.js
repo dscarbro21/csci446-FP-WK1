@@ -4,7 +4,7 @@ var ctx = canv.getContext("2d");
 var winSound = document.getElementById("sameGameWin");
 var loseSound = document.getElementById("sameGameLoss");
 // NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-var numColors = 2;
+var numColors = 4;
 
 var mousePosX;
 var mousePosY;
