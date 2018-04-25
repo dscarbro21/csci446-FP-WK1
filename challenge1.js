@@ -1,8 +1,10 @@
 var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
 
+var winSound = document.getElementById("sameGameWin");
+var loseSound = document.getElementById("sameGameLoss");
 // NUM COLORS IS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-var numColors = 4;
+var numColors = 2;
 
 var mousePosX;
 var mousePosY;
@@ -21,7 +23,6 @@ var setup = true;
 var gameOver = false;
 var winner = false; // When the player beats the last level set this guy to true
 
-var winSound = document.getElementById("")
 //TODO::modify
 function draw() {
   ctx.clearRect(0, 0, canv.width, canv.height);
@@ -411,6 +412,7 @@ function getMouseClick(event) {
 }
 
 function winnerF() {
+  updateFinalScore();
   ctx.fillStyle = "blue";
   ctx.textAlign = "center";
 	ctx.font = "80px Arial";
@@ -421,9 +423,12 @@ function winnerF() {
 
   ctx.drawImage(happy, 50, 200, 180, 180);
   ctx.drawImage(sperngeberb, canv.width / 2, 450, 200, 200);
+  winSound.play();
 }
 
 function gameOverF() {
+  updateFinalScore();
+  loseSound.play();
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
 	ctx.font = "80px Arial";
@@ -442,7 +447,6 @@ function gameOverF() {
   }
 
   gameOver = true;
-
 }
 
 function updateLevel() {
@@ -455,6 +459,18 @@ function updateLevel() {
 		yPos[i] = y;
 	}
 	level = 2;
+}
+
+function updateFinalScore() {
+  if (typeof(Storage) !== "undefined") {
+    if (score > localStorage.getItem("Score") || localStorage.getItem("Score") == null) {
+      localStorage.setItem("Score", score);
+      document.getElementById("displayScore1").innerHTML = localStorage.getItem("Score");
+    }
+    else {
+      document.getElementById("displayScore1".innerHTML = "Sorry, your browser does not support Web Storage.");
+    }
+  }
 }
 
 $(document).ready(function () {
@@ -474,6 +490,18 @@ $(document).ready(function () {
         // }
 		click = false;
     });
+
+    if (typeof(Storage) !== "undefined" ) {
+      if (localStorage.getItem("Score") == null) {
+        document.getElementById("displayScore1").innerHTML = "No High Score yet";
+      }
+      else {
+      document.getElementById("displayScore1").innerHTML = localStorage.getItem("Score");
+      }
+    }
+    else {
+      document.getElementById("displayScore1").innerHTML = "Sorry, your browser does not support Web Storage";
+    }
 });
 
 draw();

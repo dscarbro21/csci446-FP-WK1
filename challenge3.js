@@ -20,6 +20,9 @@ class Checker {
 		this.king = king;
 	}
 }
+var roasted = document.getElementById("roasted");
+var og = document.getElementById("OGsound");
+var timout = document.getElementById("timeout");
 
 var canv = document.getElementById("gamespace");
 var ctx = canv.getContext("2d");
@@ -46,6 +49,7 @@ var validMove = [];
 var deathArr = [];
 
 var score = 0;
+var frontPageScore = 0;
 var numBlocks = 64;
 
 var i = 0;
@@ -152,6 +156,7 @@ function checkFire() {
   for (var i = 0; i < fireArr.length; i++) {
     for (var j = 0; j < cowArr.length; j++) {
       if (fireArr[i] == cowArr[j]) {
+				roasted.play();
         score += 1; // change to burger pattie
         ctx.fillStyle = "cyan";
         ctx.fillRect(fireArr[i] % 8 * 100 + 1, Math.floor(fireArr[i] / 8) * 100 + 1, 99, 99);
@@ -164,7 +169,8 @@ function checkFire() {
     }
     for (var k = 0; k < billyArr.length; k++) {
       if (fireArr[i] == billyArr[k]) {
-        score -= 2; //burning people is BAD
+				og.play();
+				score -= 2; //burning people is BAD
         ctx.fillStyle = "cyan";
         ctx.fillRect(fireArr[i] % 8 * 100 + 1, Math.floor(fireArr[i] / 8) * 100 + 1, 99, 99);
         ctx.fill();
@@ -202,7 +208,7 @@ function end() {
       document.getElementById("displayScore3".innerHTML = "Sorry, your browser does not support Web Storage.");
     }
   }
-
+	timeout.play();
   started = false;
   reset();
 }
@@ -875,22 +881,14 @@ $(document).ready(function () {
     else {
       document.getElementById("displayScore3").innerHTML = "Sorry, your browser does not support Web Storage";
     }
+		frontPageScore = localStorage.getItem("Score");
+		getScore3();
 });
 
 draw();
 
 function getScore3() {
-	if (typeof(Storage) !== "undefined" ) {
-		if (localStorage.getItem("Score") == null) {
-			document.getElementById("displayScore3").innerHTML = "No High Score yet";
-		}
-		else {
-		document.getElementById("displayScore3").innerHTML = localStorage.getItem("Score");
-		}
-	}
-	else {
-		document.getElementById("displayScore3").innerHTML = "Sorry, your browser does not support Web Storage";
-	}
+	document.getElementById("score3").innerHTML = frontPageScore;
 }
 
 function reset() {
@@ -899,3 +897,4 @@ function reset() {
 	$('#score').text(score.toString());
 	draw();
 }
+document.getElementById("score3").innerHTML = frontPageScore;
