@@ -21,6 +21,7 @@ var setup = true;
 var gameOver = false;
 var winner = false; // When the player beats the last level set this guy to true
 
+var winSound = document.getElementById("")
 //TODO::modify
 function draw() {
   ctx.clearRect(0, 0, canv.width, canv.height);
