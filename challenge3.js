@@ -196,10 +196,10 @@ function end() {
   if (typeof(Storage) !== "undefined") {
     if (score > localStorage.getItem("Score") || localStorage.getItem("Score") == null) {
       localStorage.setItem("Score", score);
-      document.getElementById("displayScore").innerHTML = localStorage.getItem("Score");
+      document.getElementById("displayScore3").innerHTML = localStorage.getItem("Score");
     }
     else {
-      document.getElementById("displayScore".innerHTML = "Sorry, your browser does not support Web Storage.");
+      document.getElementById("displayScore3".innerHTML = "Sorry, your browser does not support Web Storage.");
     }
   }
 
@@ -866,18 +866,32 @@ $(document).ready(function () {
 
     if (typeof(Storage) !== "undefined" ) {
       if (localStorage.getItem("Score") == null) {
-        document.getElementById("displayScore").innerHTML = "No High Score yet";
+        document.getElementById("displayScore3").innerHTML = "No High Score yet";
       }
       else {
-      document.getElementById("displayScore").innerHTML = localStorage.getItem("Score");
+      document.getElementById("displayScore3").innerHTML = localStorage.getItem("Score");
       }
     }
     else {
-      document.getElementById("displayScore").innerHTML = "Sorry, your browser does not support Web Storage";
+      document.getElementById("displayScore3").innerHTML = "Sorry, your browser does not support Web Storage";
     }
 });
 
 draw();
+
+function getScore3() {
+	if (typeof(Storage) !== "undefined" ) {
+		if (localStorage.getItem("Score") == null) {
+			document.getElementById("displayScore3").innerHTML = "No High Score yet";
+		}
+		else {
+		document.getElementById("displayScore3").innerHTML = localStorage.getItem("Score");
+		}
+	}
+	else {
+		document.getElementById("displayScore3").innerHTML = "Sorry, your browser does not support Web Storage";
+	}
+}
 
 function reset() {
 	score = 0;

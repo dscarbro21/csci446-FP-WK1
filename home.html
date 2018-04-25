@@ -3,6 +3,8 @@
 	<head>
 		<title>Home Page</title>
 		<meta charset="utf-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="challenge3.js"></script>
 		<link rel="stylesheet" type="text/css" href="./style.css">
 	</head>
 
@@ -19,9 +21,24 @@
 				<a href="challenge3.html"><img src="images/dragon.png" alt="dragon"/></a>
 			</div>
 			<div id="challenges-text">
-				<h4>Challenge 1</h4>
-				<h4>Challenge 2</h4>
-				<h4>Challenge 3</h4>
+				<div>
+					<h4>Challenge 1</h4>
+					<h5>Top Score:</h5>
+					<span id = "displayScore1"></span>
+				</div>
+
+				<div>
+					<h4>Challenge 2</h4>
+					<h5>Top Score:</h5>
+					<span id = "displayScore2"></span>
+				</div>
+
+				<div>
+					<h4>Challenge 3</h4>
+					<h5>Top Score:</h5>
+					<span onload = "getScore3()" id = "displayScore3"></span>
+				</div>
+
 			</div>
 		</section>
 
