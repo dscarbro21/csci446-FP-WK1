@@ -11,8 +11,7 @@ DOUBLE JUMPS TOTALLY WORK
 
 BUGSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
-THE LAST RED CHECKER IS HIGHLIGHTED EVERY TIME YOU TRY TO SHOW POSSIBLE MOVES
-IF THE LAST RED CHECKER MOVES, IT LEAVES BEHIND AN INDIGO CHECKER THAT DISAPPEARS AFTER THE NEXT MOVE
+RESET DOESN'T HIDE THE IMAGES
 
 TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
@@ -60,11 +59,19 @@ var setup = true;
 var gameOver = false;
 var winner = "";
 
+var bWinAudio = document.getElementById("blackWin");
+var dJumpAudio = document.getElementById("doubleJump");
+var kingAudio = document.getElementById("kingMe");
+var rWinAudio = document.getElementById("redWins");
+var tieAudio = document.getElementById("tieCheckers");
+var timeAudio = document.getElementById("timeout");
+
 function draw() {
 	clearInterval(timer);
 	time = 30;
 	timer = setInterval(function() {
 		if (time == 0) {
+			timeAudio.play();
 			if (turn == "Red") {
 				turn = "Black";
 				$("#turn").html("Turn: Black (Player 2)");
@@ -118,18 +125,18 @@ function draw() {
 
 	ctx.fillStyle = "palegreen";
 
-  // if (setup) {
-	// 	blackCheckers.push(new Checker(42, false));
-	// 	blackCheckers.push(new Checker(28, false));
-	// 	blackCheckers.push(new Checker(14, false));
-	// 	redCheckers.push(new Checker(49, false));
-	// 	redCheckers.push(new Checker(30, false));
-	// 	allCheckers.push(49);
-	// 	allCheckers.push(30);
-	// 	allCheckers.push(42);
-	// 	allCheckers.push(28);
-	// 	allCheckers.push(14);
-  // }
+  /* if (setup) {
+	redCheckers.push(new Checker(42, false));
+	redCheckers.push(new Checker(28, false));
+	redCheckers.push(new Checker(14, false));
+	blackCheckers.push(new Checker(49, true));
+	redCheckers.push(new Checker(30, false));
+	allCheckers.push(49);
+	allCheckers.push(30);
+	allCheckers.push(42);
+	allCheckers.push(28);
+	allCheckers.push(14);
+  } */
   setup = false;
 
 	var badChecker = false;
@@ -190,6 +197,7 @@ function draw() {
 // sees what moves can be used by the player when selecting a checker
 function checkMoves() {
 	console.log(turn);
+	console.log("checkIndex:" + clickIndex);
 	// if the game is ready to execute a move, set that up first
 	var ownSpace = false;
 	var isKing = false;
@@ -373,7 +381,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex + 7)) {
 							// determine if jumping is possible
-							if ((clickIndex + 7) % 8 != 0) {
+							if ((clickIndex + 9) % 8 != 0) {
 								if (!spaceOccupied(clickIndex + 14)) {
 									validMove.push(clickIndex + 14);
 									deathArr.push(clickIndex + 7);
@@ -418,6 +426,7 @@ function checkMoves() {
 		}
 		// ctx.stroke();
 	}
+	console.log(validMove);
 }
 
 // checks if there is a checker at the index
@@ -461,6 +470,9 @@ function makeMove() {
 				for (var j = 0; j < redCheckers.length; ++j) {
 					if (redCheckers[j].index == startPos) {
 						if (clickIndex <= 7) {
+							if (redCheckers[j].king == false) {
+								kingAudio.play();
+							}
 							redCheckers[j] = new Checker(clickIndex, true);
 							scorep1 += (time * 4);
 							break;
@@ -499,6 +511,9 @@ function makeMove() {
 				for (var j = 0; j < blackCheckers.length; ++j) {
 					if (blackCheckers[j].index == startPos) {
 						if (clickIndex >= 56) {
+							if (blackCheckers[j].king == false) {
+								kingAudio.play();
+							}
 							blackCheckers[j] = new Checker(clickIndex, true);
 							scorep2 += (time * 4);
 							break;
@@ -542,6 +557,7 @@ function makeMove() {
 	if (doubleJump) {
 		checkMoves();
 		moveReady = true;
+		console.log(validMove);
 	}
 }
 
@@ -654,10 +670,13 @@ function gameOverF() {
   ctx.textAlign = "center";
 	ctx.font = "80px Arial";
 	if (winner == "Red") {
+		rWinAudio.play();
 		ctx.fillStyle = "black";
 		ctx.fillText("PLAYER 1 WINS", canv.width / 2, canv.height / 2);
 	}
 	else if (winner == "Black") {
+		bWinAudio.play();
+		ctx.fillStyle = "red";
 		ctx.fillText("PLAYER 2 WINS", canv.width / 2, canv.height / 2);
 	}
 	else {
@@ -687,6 +706,7 @@ $(document).ready(function () {
 			for (var i = 0; i < validMove.length; ++i) {
 				if ((Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100)) == validMove[i]) {
 					clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
+					dJumpAudio.play();
 					makeMove();
 				}
 			}
@@ -718,4 +738,5 @@ function reset() {
 	moveReady = false;
 	validMove = [];
 	deathArr = [];
+	turn = "Red";
 }
