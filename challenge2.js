@@ -37,6 +37,35 @@ var i = 0;
 var setup = true;
 var gameOver = false;
 var winner = "";
+var drawImages = false;
+var minMarvin = -400;
+var maxMarvin = 200;
+var marvinWiggle = 0;
+var marvinInc = true;
+
+var thomasMinX = -50;
+var thomasMaxX = 600;
+var thomasWiggleX = 0;
+var thomasIncX = true;
+var thomasSpeedX = 2;
+var thomasMaxY = 2;
+var thomasMinY = -50;
+var thomasWiggleY = 0;
+var thomasIncY = true;
+var thomasSpeedY = 1;
+var thomasMinPulse = -20;
+var thomasMaxPulse = 20;
+var thomasPulseInc = true;
+var thomasPulse = 0;
+var thomasPulseRate = 1.5;
+
+var richmondMinT = 0;
+var richmondMaxT = 500;
+var richmondTSpeed = 0.5;
+var richmondTInc = true;
+var richmondT = 0;
+var richmondAmp = 80;
+var richmondWiggle = 0;
 
 var bWinAudio = document.getElementById("blackWin");
 var dJumpAudio = document.getElementById("doubleJump");
@@ -156,7 +185,10 @@ function draw() {
 		}
 	}
 
-
+	if (checkGame() && (winner != "Black" && winner != "Red")) {
+		gameOver = true;
+		winner = "";
+	}
 
 	if (redCheckers.length == 0) {
 		gameOver = true;
@@ -167,14 +199,43 @@ function draw() {
 		winner = "Red";
 	}
 
-	if (checkGame()) {
-		gameOver = true;
-		winner = "";
+	console.log("red len: " + redCheckers.length + "black len: " + blackCheckers.length);
+
+
+
+	if (drawImages) {
+		var marvin = document.getElementById("marvin");
+	  var richmond = document.getElementById("richmond");
+	  var thomas = document.getElementById("thomas");
+
+		ctx.drawImage(marvin, canv.width / 2 + marvinWiggle, 600, 200, 200);
+	  ctx.drawImage(thomas, 50 + thomasWiggleX, 400 + thomasWiggleY, 180 + thomasPulse, 180 + thomasPulse);
+	  ctx.drawImage(richmond, 60 + richmondT, 75 + richmondWiggle, 180, 160);
+
+		ctx.fillStyle = "white";
+	  ctx.textAlign = "center";
+		ctx.font = "80px Arial";
+		if (winner == "Red") {
+			rWinAudio.play();
+			ctx.fillStyle = "black";
+			ctx.fillText("PLAYER 1 WINS", canv.width / 2, canv.height / 2);
+		}
+		else if (winner == "Black") {
+			bWinAudio.play();
+			ctx.fillStyle = "red";
+			ctx.fillText("PLAYER 2 WINS", canv.width / 2, canv.height / 2);
+		}
+		else {
+			tieCheckers.play();
+			ctx.fillText("...You tied. Seriously?", canv.width / 2, canv.height / 2);
+		}
 	}
-	
+
   if(gameOver) {
+	if (!drawImages)
     gameOverF();
   }
+
 }
 
 // sees what moves can be used by the player when selecting a checker
@@ -408,7 +469,7 @@ function checkMoves() {
 		}
 		// ctx.stroke();
 	}
-	console.log(validMove);
+	// console.log(validMove);
 }
 
 // checks if there is a checker at the index
@@ -634,31 +695,113 @@ function getMouseClick(event) {
 }
 
 function gameOverF() {
-  ctx.fillStyle = "white";
-  ctx.textAlign = "center";
-	ctx.font = "80px Arial";
-	if (winner == "Red") {
-		rWinAudio.play();
-		ctx.fillStyle = "black";
-		ctx.fillText("PLAYER 1 WINS", canv.width / 2, canv.height / 2);
-	}
-	else if (winner == "Black") {
-		bWinAudio.play();
-		ctx.fillStyle = "red";
-		ctx.fillText("PLAYER 2 WINS", canv.width / 2, canv.height / 2);
-	}
-	else {
-		tieCheckers.play();
-		ctx.fillText("...You tied. Seriously?", canv.width / 2, canv.height / 2);
+  // ctx.fillStyle = "white";
+  // ctx.textAlign = "center";
+	// ctx.font = "80px Arial";
+	// if (winner == "Red") {
+	// 	rWinAudio.play();
+	// 	ctx.fillStyle = "black";
+	// 	ctx.fillText("PLAYER 1 WINS", canv.width / 2, canv.height / 2);
+	// }
+	// else if (winner == "Black") {
+	// 	bWinAudio.play();
+	// 	ctx.fillStyle = "red";
+	// 	ctx.fillText("PLAYER 2 WINS", canv.width / 2, canv.height / 2);
+	// }
+	// else {
+	// 	tieCheckers.play();
+	// 	ctx.fillText("...You tied. Seriously?", canv.width / 2, canv.height / 2);
+	// }
+
+	drawImages = true;
+  // var marvin = document.getElementById("marvin");
+  // var richmond = document.getElementById("richmond");
+  // var thomas = document.getElementById("thomas");
+
+	var id = setInterval(frame, 5);
+	function frame() {
+		if (marvinWiggle >= maxMarvin) {
+			marvinInc = false;
+			marvinWiggle = maxMarvin - 0.01;
+		}
+		else if (marvinWiggle <= minMarvin) {
+			marvinInc = true;
+			marvinWiggle = minMarvin + 0.01;
+		}
+		else if(marvinInc) {
+			marvinWiggle += 1;
+		}
+		else {
+			marvinWiggle -= 1;
+		}
+
+		if (thomasWiggleX >= thomasMaxX) {
+			thomasIncX = false;
+			thomasWiggleX = thomasMaxX - 0.01;
+		}
+		else if (thomasWiggleX <= thomasMinX) {
+			thomasIncX = true;
+			thomasWiggleX = thomasMinX + 0.01;
+		}
+		else if (thomasIncX) {
+			thomasWiggleX += thomasSpeedX;
+		}
+		else {
+			thomasWiggleX -= thomasSpeedY;
+		}
+
+		if (thomasWiggleY >= thomasMaxY) {
+			thomasIncY = false;
+			thomasWiggleY = thomasMaxY - 0.01;
+		}
+		else if (thomasWiggleY <= thomasMinY) {
+			thomasIncY = true;
+			thomasWiggleY = thomasMinY + 0.01;
+		}
+		else if (thomasIncY) {
+			thomasWiggleY += thomasSpeedY;
+		}
+		else {
+			thomasWiggleY -= thomasSpeedY;
+		}
+
+		if (thomasPulse >= thomasMaxPulse) {
+			thomasPulseInc = false;
+			thomasPulse = thomasMaxPulse - 0.1;
+		}
+		else if (thomasPulse <= thomasMinPulse) {
+			thomasPulseInc = true;
+			thomasPulse = thomasMinPulse + 0.1;
+		}
+		else if (thomasPulseInc) {
+			thomasPulse += thomasPulseRate;
+		}
+		else {
+			thomasPulse -= thomasPulseRate;
+		}
+
+		if (richmondT >= richmondMaxT) {
+			richmondTInc = false;
+			richmondT = richmondMaxT - 0.1;
+		}
+		else if (richmondT <= richmondMinT) {
+			richmondTInc = true;
+			richmondT = richmondMinT + 0.1;
+		}
+		else if (richmondTInc) {
+			richmondT += richmondTSpeed;
+		}
+		else {
+			richmondT -= richmondTSpeed;
+		}
+		richmondWiggle = richmondAmp * Math.cos(2 * Math.PI / 120 * richmondT);
+
+		draw();
 	}
 
-  var marvin = document.getElementById("marvin");
-  var richmond = document.getElementById("richmond");
-  var thomas = document.getElementById("thomas");
-
-  ctx.drawImage(marvin, canv.width / 2, 600, 200, 200);
-  ctx.drawImage(thomas, 50, 400, 180, 180);
-  ctx.drawImage(richmond, 60, 30, 180, 160);
+  // ctx.drawImage(marvin, canv.width / 2 + marvinWiggle, 600, 200, 200);
+  // ctx.drawImage(thomas, 50, 400, 180, 180);
+  // ctx.drawImage(richmond, 60, 30, 180, 160);
 
 }
 
@@ -683,7 +826,7 @@ $(document).ready(function () {
 		}
 		else {
 			clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
-			console.log("index: " + clickIndex);
+			// console.log("index: " + clickIndex);
 			if (moveReady == false) {
 				checkMoves();
 			}
