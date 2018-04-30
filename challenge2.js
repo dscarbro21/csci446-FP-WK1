@@ -861,5 +861,6 @@ function reset() {
 	deathArr = [];
 	turn = "Red";
 	gameOver = false;
+	clearInterval(id);
 	draw();
 }

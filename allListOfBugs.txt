@@ -1,0 +1,35 @@
+NOTE: We did not receive a bug report from Robert Imbler
+
+Bugs that apply to website or all games:
+	How Do Play? box must be clicked near the center (vertically)
+		-----
+	
+Bugs that apply to Checkers:
+	Once reached end of game where black could move, red couldn't. Tie screen popped up.
+		----- FIXED! Ties now only trigger at the appropriate time
+	Checker is not highlighted
+		-----
+	No jump or slide animation
+		-----
+	No multiple jumps possible
+		-----
+	Score not stored
+		-----
+	Once a checker moved and didn't jump another, but one still vanished.
+		-----
+	End up with possible moves, but none allowed
+		-----
+	Boing sound exists. I only heard it once. Ever.
+		----- Not a bug; only happens during double (or more) jumps
+	Checkers win screen stays when reset is pressed
+		-----
+	
+Bugs that apply to Dragon Drop:
+	No timer
+		-----
+	Billy can go on top of a cow.
+		----- Not a bug; Billy is a skilled bullrider
+	Billy's gravestone says "Rest in RIP". What does that mean?
+		----- Not a bug; how is this a bug?
+	Does not work in Firefox
+		-----
