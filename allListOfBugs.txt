@@ -10,15 +10,15 @@ Bugs that apply to Checkers:
 	Checker is not highlighted
 		----- Not a bug; there is no need to highlight the checker that will be moving
 	No jump or slide animation
-		----- 
+		----- Any attempt to implement this completely broke the game so we nixed it
 	No multiple jumps possible
-		----- 
+		----- FIXED! The check for ties function broke the double jump functionality; now there is a bypass for it
 	Score not stored
 		-----
 	Once a checker moved and didn't jump another, but one still vanished.
-		-----
+		----- Having trouble replicating it, so we don't know about this one
 	End up with possible moves, but none allowed
-		-----
+		----- Having trouble replicating it, so we don't know about this one
 	Boing sound exists. I only heard it once. Ever.
 		----- Not a bug; only happens during double (or more) jumps
 	Checkers win screen stays when reset is pressed (same with tie screen)

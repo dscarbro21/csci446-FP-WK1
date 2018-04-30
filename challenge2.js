@@ -18,6 +18,7 @@ var turn = "Red";
 var moveReady = false;
 var startPos;
 var doubleJump = false;
+var stillActive = false;
 
 var redCheckers = [];
 var blackCheckers = [];
@@ -188,9 +189,11 @@ function draw() {
 		}
 	}
 
-	if (checkGame() && (winner != "Black" && winner != "Red")) {
-		gameOver = true;
-		winner = "";
+	if (!stillActive) {	
+		if (checkGame() && (winner != "Black" && winner != "Red")) {
+			gameOver = true;
+			winner = "";
+		}
 	}
 
 	if (redCheckers.length == 0) {
@@ -605,12 +608,14 @@ function makeMove() {
 
 // this checks for double jumps, triple jumps, etc.
 function checkMoreJumps() {
+	stillActive = true;
+	console.log("Looking for more jumps");
 	draw();
 	deathArr = [];
 	validMove = [];
 	checkMoves();
+	console.log("More jumps" + validMove);
 	if (validMove == []) {
-		console.log("YO");
 		return false;
 	}
 	moreJumps = false;
@@ -646,7 +651,7 @@ function checkMoreJumps() {
 		turn = "Black";
 		$("#turn").html("Turn: Black (Player 2)");
 	}
-
+	stillActive = false;
 	return false;
 
 }
@@ -665,6 +670,7 @@ function updateScore() {
 
 // Checks for ties
 function checkGame() {
+	console.log("Checking for tie");
 	var dispHolder = false;
 	var turnHolder = turn;
 	if (displayMoves) {
