@@ -2,7 +2,7 @@ NOTE: We did not receive a bug report from Robert Imbler
 
 Bugs that apply to website or all games:
 	How Do Play? box must be clicked near the center (vertically)
-		-----
+		----- FIXED! Clicking anywhere on the box brings up instructions
 	
 Bugs that apply to Checkers:
 	Once reached end of game where black could move, red couldn't. Tie screen popped up.

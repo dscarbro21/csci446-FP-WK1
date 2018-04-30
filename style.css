@@ -1,4 +1,4 @@
-#title, #instructionTitle, #instructions, footer, aside {
+#title, #instructionTitle, #instructions, footer{
     text-align: center;
     background-color: purple;
     color: #ff0a4b;
@@ -19,13 +19,9 @@
     margin-bottom: 50px;
 }
 
-#instructionTitle {
-	font-size: 1em;
-}
-
 #instructions {
 	border-top: 1px solid black;
-	font-size: 0.75em;
+	font-size: 1.25em;
 	display: none;
     margin-top: 50px;
 }
@@ -42,11 +38,9 @@ footer {
 }
 
 aside {
-	border: 1px solid black;
 	margin: auto;
 	clear: both;
 	display: block;
-	padding: 2px;
 }
 
 #scorezone {
