@@ -75,10 +75,11 @@
 
 			<div>
 				<div style="float:left; padding:50px" id="scorezone">
+					<p id="timer">1:00</p>
 					<h3>Score:</h3>
 					<p id="score">0</p>
 					<button onclick="reset()">Reset</button>
-					<button onclick="setTimeout(end, 60000);drawBoard();">Start!</button>
+					<button onclick="setTimeout(end, 60000);drawBoard();countdown();">Start!</button>
 					<div>
 						<h3>Top Score:</h3>
 						<span id = "displayScore4"></span>

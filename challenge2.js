@@ -79,6 +79,7 @@ function draw() {
 	console.log("DRAW");
 	clearInterval(timer);
 	time = 30;
+	$("#timer").html("0:30");
 	timer = setInterval(function() {
 		if (time == 0) {
 			timeAudio.play();
@@ -860,6 +861,7 @@ function reset() {
 	setup = true;
 	$('#scorep1').text(scorep1.toString());
 	$('#scorep2').text(scorep2.toString());
+	$('#timer').text("0:30");
 	redCheckers = [];
 	blackCheckers = [];
 	allCheckers = [];

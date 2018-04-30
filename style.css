@@ -44,6 +44,7 @@ aside {
 }
 
 #scorezone {
+	text-align: center;
     border: 6px outset blue;
     padding: 15px;
     width: 180px;

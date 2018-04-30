@@ -26,7 +26,7 @@ Bugs that apply to Checkers:
 	
 Bugs that apply to Dragon Drop:
 	No timer
-		-----
+		----- FIXED! Added a visible timer that player can use to measure time remaining
 	Billy can go on top of a cow.
 		----- Not a bug; Billy is a skilled bullrider
 	Billy's gravestone says "Rest in RIP". What does that mean?

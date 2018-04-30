@@ -58,6 +58,7 @@ var setup = true;
 var gameOver = false;
 var winner = false; // When the player beats the last level set this guy to true
 var started = false;
+var kill = false;
 
 var timer = setInterval(mooveCows, 5000);
 
@@ -65,6 +66,29 @@ var cowArr = [];
 
 var billyArr = [];
 var fireArr = [];
+
+function countdown() {
+	console.log("HEY");
+	if (kill) {
+		clearInterval(timerFunc);
+	}
+	var time = 60;
+	$("#timer").html("1:00");
+	timerFunc = setInterval(function() {
+		--time;
+		if (time == 0) {
+			$("#timer").html("Time's up!");
+			clearInterval(timerFunc);
+		}
+		else if (time < 10) {
+			$("#timer").html("0:0" + time);
+		}
+		else {
+			$("#timer").html("0:" + time);
+		}
+
+	}, 1000);
+}
 
 function mooveCows() {
   if(started) {
@@ -884,7 +908,7 @@ $(document).ready(function () {
       document.getElementById("displayScore4").innerHTML = "Sorry, your browser does not support Web Storage";
     }
 		frontPageScore = localStorage.getItem("Score");
-		getScore3();
+		//getScore3();
 });
 
 draw();
@@ -893,6 +917,8 @@ function reset() {
 	score = 0;
 	setup = true;
 	$('#score').text(score.toString());
+	kill = true;
+	countdown();
 	draw();
 }
-document.getElementById("score3").innerHTML = frontPageScore;
+//document.getElementById("score3").innerHTML = frontPageScore;
