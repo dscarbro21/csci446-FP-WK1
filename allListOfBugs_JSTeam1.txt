@@ -22,7 +22,7 @@ Bugs that apply to Checkers:
 	Boing sound exists. I only heard it once. Ever.
 		----- Not a bug; only happens during double (or more) jumps
 	Checkers win screen stays when reset is pressed (same with tie screen)
-		-----FIXED! setInterval function for animating winScreen was never cleared, causing an endless draw loop to hang the game
+		----- FIXED! setInterval function for animating winScreen was never cleared, causing an endless draw loop to hang the game
 
 Bugs that apply to Dragon Drop:
 	No timer
