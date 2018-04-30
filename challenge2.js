@@ -83,10 +83,12 @@ function draw() {
 			if (turn == "Red") {
 				turn = "Black";
 				$("#turn").html("Turn: Black (Player 2)");
+				moveReady = false;
 			}
 			else {
 				turn = "Red";
 				$("#turn").html("Turn: Red (Player 1)");
+				moveReady = false;
 			}
 			draw();
 		}
@@ -199,10 +201,6 @@ function draw() {
 		winner = "Red";
 	}
 
-	console.log("red len: " + redCheckers.length + "black len: " + blackCheckers.length);
-
-
-
 	if (drawImages) {
 		var marvin = document.getElementById("marvin");
 	  var richmond = document.getElementById("richmond");
@@ -240,6 +238,7 @@ function draw() {
 
 // sees what moves can be used by the player when selecting a checker
 function checkMoves() {
+	console.log("checking moves for " + clickIndex);
 	validMove = [];
 	// if the game is ready to execute a move, set that up first
 	var ownSpace = false;
@@ -661,29 +660,38 @@ function updateScore() {
 
 // Checks for ties
 function checkGame() {
-	var holder = false;
+	console.log("checking for tie");
+	var dispHolder = false;
+	var turnHolder = turn;
 	if (displayMoves) {
-		holder = true;
+		dispHolder = true;
 		displayMoves = false;
 	}
+	turn = "Red";
 	for (var i = 0; i < redCheckers.length; ++i) {
 		clickIndex = redCheckers[i].index;
 		checkMoves();
+		console.log(validMove);
 		if (validMove.length > 0) {
 			moveReady = false;
-			displayMoves = holder;
+			displayMoves = dispHolder;
+			turn = turnHolder;
 			return false;
 		}
 	}
+	turn = "Black";
 	for (var i = 0; i < blackCheckers.length; ++i) {
 		clickIndex = blackCheckers[i].index;
 		checkMoves();
 		if (validMove.length > 0) {
 			moveReady = false;
-			displayMoves = holder;
+			displayMoves = dispHolder;
+			turn = turnHolder;
 			return false;
 		}
 	}
+	turn = turnHolder;
+	console.log("TIE");
 	return true;
 }
 
@@ -848,6 +856,7 @@ function reset() {
 	blackCheckers = [];
 	allCheckers = [];
 	moveReady = false;
+	click = false;
 	validMove = [];
 	deathArr = [];
 	turn = "Red";
