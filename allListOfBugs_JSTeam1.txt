@@ -14,7 +14,7 @@ Bugs that apply to Checkers:
 	No multiple jumps possible
 		----- FIXED! The check for ties function broke the double jump functionality; now there is a bypass for it
 	Score not stored
-		-----
+		----- FIXED! Saves the top score of whoever won (if its better than the original top score)
 	Once a checker moved and didn't jump another, but one still vanished.
 		----- Having trouble replicating it, so we don't know about this one
 	End up with possible moves, but none allowed

@@ -714,6 +714,23 @@ function getMouseClick(event) {
 }
 
 function gameOverF() {
+	var score;
+	if (winner == "Red") {
+		score = scorep1;
+	}
+	else if (winner == "Black") {
+		score = scorep2;
+	}
+	else {
+		score = 0;
+	}
+	if (score > localStorage.getItem("score") || localStorage.getItem("score") == null) {
+      localStorage.setItem("score", score);
+      document.getElementById("topScore").innerHTML = localStorage.getItem("score");
+    }
+    else {
+      document.getElementById("topScore".innerHTML = "Sorry, your browser does not support Web Storage.");
+    }
   // ctx.fillStyle = "white";
   // ctx.textAlign = "center";
 	// ctx.font = "80px Arial";
@@ -856,6 +873,18 @@ $(document).ready(function () {
 			click = false;
 		}
     });
+	
+	if (typeof(Storage) !== "undefined" ) {
+      if (localStorage.getItem("score") == null) {
+        document.getElementById("topScore").innerHTML = "No High Score yet";
+      }
+      else {
+      document.getElementById("topScore").innerHTML = localStorage.getItem("score");
+      }
+    }
+    else {
+      document.getElementById("topScore").innerHTML = "Sorry, your browser does not support Web Storage";
+    }
 });
 
 function reset() {
