@@ -68,6 +68,8 @@ var richmondT = 0;
 var richmondAmp = 80;
 var richmondWiggle = 0;
 
+var id;
+
 var bWinAudio = document.getElementById("blackWin");
 var dJumpAudio = document.getElementById("doubleJump");
 var kingAudio = document.getElementById("kingMe");
@@ -190,7 +192,7 @@ function draw() {
 		}
 	}
 
-	if (!stillActive) {	
+	if (!stillActive) {
 		if (checkGame() && (winner != "Black" && winner != "Red")) {
 			gameOver = true;
 			winner = "";
@@ -735,7 +737,7 @@ function gameOverF() {
   // var richmond = document.getElementById("richmond");
   // var thomas = document.getElementById("thomas");
 
-	var id = setInterval(frame, 5);
+	id = setInterval(frame, 5);
 	function frame() {
 		if (marvinWiggle >= maxMarvin) {
 			marvinInc = false;
@@ -843,8 +845,9 @@ $(document).ready(function () {
 		}
 		else {
 			clickIndex = Math.floor(mousePosY / 100) * 8 + Math.floor(mousePosX / 100);
-			// console.log("index: " + clickIndex);
+			console.log("index: " + clickIndex);
 			if (moveReady == false) {
+				console.log("checking moves");
 				checkMoves();
 			}
 			else {
@@ -871,5 +874,10 @@ function reset() {
 	deathArr = [];
 	turn = "Red";
 	gameOver = false;
+	turn = "Red";
+	winner = ""
+	drawImages = false;
+	stillActive = false;
+	clearInterval(id);
 	draw();
 }
