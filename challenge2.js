@@ -75,6 +75,7 @@ var tieAudio = document.getElementById("tieCheckers");
 var timeAudio = document.getElementById("timeout");
 
 function draw() {
+	console.log("DRAW");
 	clearInterval(timer);
 	time = 30;
 	timer = setInterval(function() {
@@ -274,7 +275,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex + 7)) {
 							// determine if jumping is possible
-							if ((clickIndex + 7) % 8 != 0) {
+							if ((clickIndex + 7) % 8 != 0 && (clickIndex + 14) < 64) {
 								if (!spaceOccupied(clickIndex + 14)) {
 									validMove.push(clickIndex + 14);
 									deathArr.push(clickIndex + 7);
@@ -294,7 +295,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex + 9)) {
 							// determine if jumping is possible
-							if ((clickIndex + 9) % 8 != 7) {
+							if ((clickIndex + 9) % 8 != 7 && (clickIndex + 18) < 64) {
 								if (!spaceOccupied(clickIndex + 18)) {
 									validMove.push(clickIndex + 18);
 									deathArr.push(clickIndex + 9);
@@ -319,7 +320,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex - 9)) {
 							// determine if jumping is possible
-							if ((clickIndex - 9) % 8 != 0) {
+							if ((clickIndex - 9) % 8 != 0 && (clickIndex - 18) >= 0) {
 								if (!spaceOccupied(clickIndex - 18)) {
 									validMove.push(clickIndex - 18);
 									deathArr.push(clickIndex - 9);
@@ -336,7 +337,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex - 7)) {
 							// determine if jumping is possible
-							if ((clickIndex - 7) % 8 != 7) {
+							if ((clickIndex - 7) % 8 != 7 && (clickIndex - 14) >= 0) {
 								if (!spaceOccupied(clickIndex - 14)) {
 									validMove.push(clickIndex - 14);
 									deathArr.push(clickIndex - 7);
@@ -378,7 +379,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex - 9)) {
 							// determine if jumping is possible
-							if ((clickIndex - 9) % 8 != 0) {
+							if ((clickIndex - 9) % 8 != 0 && (clickIndex - 18) >= 0) {
 								if (!spaceOccupied(clickIndex - 18)) {
 									validMove.push(clickIndex - 18);
 									deathArr.push(clickIndex - 9);
@@ -398,7 +399,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex - 7)) {
 							// determine if jumping is possible
-							if ((clickIndex + 9) % 8 != 7) {
+							if ((clickIndex + 9) % 8 != 7 && (clickIndex - 14) >= 0) {
 								if (!spaceOccupied(clickIndex - 14)) {
 									validMove.push(clickIndex - 14);
 									deathArr.push(clickIndex - 7);
@@ -423,7 +424,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex + 7)) {
 							// determine if jumping is possible
-							if ((clickIndex + 7) % 8 != 0) {
+							if ((clickIndex + 7) % 8 != 0 && (clickIndex + 14) < 64) {
 								if (!spaceOccupied(clickIndex + 14)) {
 									validMove.push(clickIndex + 14);
 									deathArr.push(clickIndex + 7);
@@ -440,7 +441,7 @@ function checkMoves() {
 					else {
 						if (spaceOccupiedByEnemy(clickIndex + 9)) {
 							// determine if jumping is possible
-							if ((clickIndex + 9) % 8 != 7) {
+							if ((clickIndex + 9) % 8 != 7 && (clickIndex + 18) < 64) {
 								if (!spaceOccupied(clickIndex + 18)) {
 									validMove.push(clickIndex + 18);
 									deathArr.push(clickIndex + 9);
@@ -468,7 +469,7 @@ function checkMoves() {
 		}
 		// ctx.stroke();
 	}
-	// console.log(validMove);
+	console.log(validMove);
 }
 
 // checks if there is a checker at the index
@@ -608,6 +609,10 @@ function checkMoreJumps() {
 	deathArr = [];
 	validMove = [];
 	checkMoves();
+	if (validMove == []) {
+		console.log("YO");
+		return false;
+	}
 	moreJumps = false;
 	for (var i = 0; i < deathArr.length; ++i) {
 		if (deathArr[i] != -1) {
@@ -660,7 +665,6 @@ function updateScore() {
 
 // Checks for ties
 function checkGame() {
-	console.log("checking for tie");
 	var dispHolder = false;
 	var turnHolder = turn;
 	if (displayMoves) {
@@ -671,7 +675,6 @@ function checkGame() {
 	for (var i = 0; i < redCheckers.length; ++i) {
 		clickIndex = redCheckers[i].index;
 		checkMoves();
-		console.log(validMove);
 		if (validMove.length > 0) {
 			moveReady = false;
 			displayMoves = dispHolder;
@@ -691,7 +694,6 @@ function checkGame() {
 		}
 	}
 	turn = turnHolder;
-	console.log("TIE");
 	return true;
 }
 
@@ -861,6 +863,5 @@ function reset() {
 	deathArr = [];
 	turn = "Red";
 	gameOver = false;
-	clearInterval(id);
 	draw();
 }

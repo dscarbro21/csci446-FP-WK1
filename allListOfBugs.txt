@@ -8,11 +8,11 @@ Bugs that apply to Checkers:
 	Once reached end of game where black could move, red couldn't. Tie screen popped up.
 		----- FIXED! Ties now only trigger at the appropriate time
 	Checker is not highlighted
-		-----
+		----- Not a bug; there is no need to highlight the checker that will be moving
 	No jump or slide animation
-		-----
+		----- 
 	No multiple jumps possible
-		-----
+		----- 
 	Score not stored
 		-----
 	Once a checker moved and didn't jump another, but one still vanished.
@@ -21,7 +21,7 @@ Bugs that apply to Checkers:
 		-----
 	Boing sound exists. I only heard it once. Ever.
 		----- Not a bug; only happens during double (or more) jumps
-	Checkers win screen stays when reset is pressed
+	Checkers win screen stays when reset is pressed (same with tie screen)
 		-----
 	
 Bugs that apply to Dragon Drop:
